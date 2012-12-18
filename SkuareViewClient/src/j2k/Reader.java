@@ -186,7 +186,6 @@ public class Reader extends Cache implements Runnable {
 			
 		}
 	}
-	@Override
 	public void run() {
 		try{
 			String roi = "";

@@ -128,14 +128,14 @@ InternalFrameListener
 
 	public void openImage(String fname) throws Exception
 	{
-		if(parentWindow != null) parentWindow.notifyTotalBytes(0);
+		//if(parentWindow != null) parentWindow.notifyTotalBytes(0);
 
-		if(openHandCursor != null) setCursor(openHandCursor);
+		//if(openHandCursor != null) setCursor(openHandCursor);
 
-		if(miniViewFrame != null) {
-			miniViewFrame.setVisible(false);
-			miniViewFrame = null;
-		}
+		//if(miniViewFrame != null) {
+		//	miniViewFrame.setVisible(false);
+		//	miniViewFrame = null;
+		//}
 
 		incrX = 0;
 		incrY = 0;
@@ -146,14 +146,15 @@ InternalFrameListener
 
 		j2kImage.open(fname);
 
-		Dimension size = getSize();
+		//Dimension size = getSize();
+		Dimension size = new Dimension(320,200);
 
 		mainView = j2kImage.createView(size.width, size.height);
 		mainView.addObserver(this);
 		mainView.make();
 
-		adjustProgressBars();
-		showViewFrame();
+		//adjustProgressBars();
+		//showViewFrame();
 	}
 
 	public boolean getZoomMode()
@@ -422,8 +423,8 @@ InternalFrameListener
 		if(panelMoving) return;
 
 		if(!mousePressed) {
-			horScroll.setValue(mainView.getX());
-			verScroll.setValue(mainView.getY());
+			//horScroll.setValue(mainView.getX());
+			//verScroll.setValue(mainView.getY());
 
 		} else {
 			if(e.getAdjustable() == horScroll) incrX = mainView.getX() - e.getValue();

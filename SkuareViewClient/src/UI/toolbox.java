@@ -1,19 +1,38 @@
 package UI;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+
+import java.awt.Container;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 
 public class toolbox extends JPanel {
 
+	private SkuareViewClient _client;
 	/**
 	 * Create the panel.
 	 */
-	public toolbox() {
+	public toolbox(SkuareViewClient client) {
+		_client = client;
 		setLayout(null);
 		
-		JToggleButton tglbtnTool = new JToggleButton("Tool 1");
+		final JToggleButton tglbtnTool = new JToggleButton("Tool 1");
+		tglbtnTool.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tglbtnTool.isSelected())
+				{
+					_client.getContent();
+				}
+				else
+				{
+					System.out.println("Not Selected");
+				}
+			}
+		});
 		tglbtnTool.setBounds(43, 5, 84, 29);
 		tglbtnTool.setVerticalAlignment(SwingConstants.TOP);
 		add(tglbtnTool);

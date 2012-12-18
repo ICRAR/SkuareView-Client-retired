@@ -1,5 +1,7 @@
 package UI;
 import info.clearthought.layout.TableLayout;
+
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -33,6 +35,7 @@ public class SkuareViewClient  {
 	private JFrame frame;
 	private ToolWindowManager toolWindowManager;
 	private int index;
+	private String imageName;
 	
 	protected void run()
 	{
@@ -67,7 +70,10 @@ public class SkuareViewClient  {
 		JMenuItem openMenuitem = new JMenuItem("Open");
 		openMenuitem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				createNewWindow();
+				GetUrl getUrl = new GetUrl();
+				getUrl.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+				imageName = getUrl.showDialog();
+				createNewWindow(j2k.OpenImage.open(imageName));
 			}
 		});
 		fileMenu.add(openMenuitem);
@@ -91,7 +97,7 @@ public class SkuareViewClient  {
 	{
 		MyDoggyToolWindowManager twManager = new MyDoggyToolWindowManager();
 		this.toolWindowManager = twManager;
-		toolbox tb = new toolbox();
+		toolbox tb = new toolbox(this);
 		toolWindowManager.registerToolWindow("Menu", "", null, tb,ToolWindowAnchor.RIGHT);
 		toolWindowManager.registerToolWindow("Console","",null,new JPanel(),ToolWindowAnchor.BOTTOM);
 		
@@ -145,12 +151,13 @@ public class SkuareViewClient  {
 		
 		setupContentManagerUI();
 	}
-	protected void createNewWindow()
+	protected void createNewWindow(JPanel newWindow)
 	{
-		JPanel newWindow = new JPanel();
+		String id = imageName + index;
+		String title = imageName;
 		ContentManager contentManager = toolWindowManager.getContentManager();
-		Content content = contentManager.addContent("Image Window" + index,"Image " + index,null,newWindow);
-		content.setToolTipText("Image " + index);
+		Content content = contentManager.addContent(id,title,null,newWindow);
+		content.setToolTipText(title);
 		index++;
 	}
 	protected void setupContentManagerUI()
@@ -182,6 +189,12 @@ public class SkuareViewClient  {
 		{
 			e.printStackTrace();
 		}
+	}
+	public void getContent()
+	{
+		ContentManager contManager = toolWindowManager.getContentManager();
+		Content selected = contManager.getSelectedContent();
+		System.out.println(selected.getId());
 	}
 
 }

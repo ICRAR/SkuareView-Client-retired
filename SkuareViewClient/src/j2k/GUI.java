@@ -27,6 +27,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 
+import UI.GetUrl;
+
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements ImageWindow {
 
@@ -199,23 +201,19 @@ public class GUI extends JFrame implements ImageWindow {
 		}
 	}
 
-	@Override
 	public JScrollBar getHorizontalScrollBar() {
 		return horizontalScrollBar;
 	}
 
-	@Override
 	public JScrollBar getVerticalScrollBar() {
 		return verticalScrollBar;
 	}
 
-	@Override
 	public void notifyImageInfo(String info) {
 		statusTxt.setText(info);
 
 	}
 
-	@Override
 	public void notifyTotalBytes(int bytes) {
 		double current;
 		double timeElasped;
