@@ -1,3 +1,4 @@
+package UI;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
