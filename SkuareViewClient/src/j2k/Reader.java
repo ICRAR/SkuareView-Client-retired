@@ -1,10 +1,7 @@
 package j2k;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.SocketException;
-import java.nio.channels.SocketChannel;
 
 public class Reader extends Cache implements Runnable {
 

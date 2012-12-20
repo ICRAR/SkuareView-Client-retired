@@ -28,13 +28,6 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 
-/**
- * 
- * The <code>ImagePanel</code> class implements all the necessary code for remote 
- * browsing of JPEG2000 images. It derives from a <code>JDesktopPane</code> where shows 
- * the image reconstructions. It allows to show a mini view for navigation.
- *
- */
 @SuppressWarnings("serial")
 public class ImagePanel extends JPanel implements 
 ComponentListener, AdjustmentListener,
@@ -192,7 +185,6 @@ InternalFrameListener
 			miniView = j2kImage.createView(miniViewWidth, miniViewWidth);
 			miniView.addObserver(this);
 
-			JPanel menu = GUI.getMenu();
 			miniViewFrame = new JPanel();
 			//miniViewFrame.addFrameListener(this);
 			//miniViewFrame.setFrameIcon(null);
@@ -235,8 +227,6 @@ InternalFrameListener
 			miniViewFrame.add(miniViewPanel, BorderLayout.CENTER);
 
 			miniViewFrame.setVisible(true);
-
-			menu.add(miniViewFrame);
 
 			miniView.make();
 		}
@@ -399,6 +389,10 @@ InternalFrameListener
 		}
 	}
 
+	public void adjustZoom()
+	{
+		
+	}
 	private void adjustProgressBars()
 	{
 		Rectangle imageROI = mainView.getBounds();

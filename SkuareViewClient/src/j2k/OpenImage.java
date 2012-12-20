@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
+import org.noos.xing.mydoggy.Content;
+
 public class OpenImage extends JFrame implements ImageWindow  {
 
 	private static String imageName;
@@ -41,6 +43,7 @@ public class OpenImage extends JFrame implements ImageWindow  {
 	}
 	public OpenImage()
 	{
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -18,16 +18,16 @@ public class toolbox extends JPanel {
 		_client = client;
 		setLayout(null);
 		
-		final JToggleButton tglbtnTool = new JToggleButton("Tool 1");
+		final JToggleButton tglbtnTool = new JToggleButton("Zoom");
 		tglbtnTool.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tglbtnTool.isSelected())
 				{
-					_client.getContent();
+					_client.getContent(false);
 				}
 				else
 				{
-					System.out.println("Not Selected");
+					_client.getContent(true);
 				}
 			}
 		});

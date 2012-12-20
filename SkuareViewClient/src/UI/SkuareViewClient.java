@@ -1,6 +1,9 @@
 package UI;
 import info.clearthought.layout.TableLayout;
 
+import j2k.ImagePanel;
+import j2k.OpenImage;
+
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,7 +66,7 @@ public class SkuareViewClient  {
 		this.frame = new JFrame("SkuareView Client 0.1");
 		this.frame.setSize(640,480);
 		this.frame.setLocation(100,100);
-		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menubar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
@@ -190,11 +193,27 @@ public class SkuareViewClient  {
 			e.printStackTrace();
 		}
 	}
-	public void getContent()
+	public void getContent(boolean activated)
 	{
 		ContentManager contManager = toolWindowManager.getContentManager();
 		Content selected = contManager.getSelectedContent();
-		System.out.println(selected.getId());
+		if(selected != null)
+		{
+			System.out.println(selected.getId());
+			ImagePanel img = (ImagePanel) selected.getComponent();
+			if(!activated)
+			{
+				img.setZoomMode(true);
+			}
+			else
+			{
+				img.setZoomMode(false);
+			}
+		}
+		else
+		{
+			System.out.println("Nothing to select");
+		}
 	}
 
 }
