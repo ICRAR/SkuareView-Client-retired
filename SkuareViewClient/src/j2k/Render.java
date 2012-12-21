@@ -19,7 +19,7 @@ public class Render implements Runnable {
 	private Kdu_dims decompressedPart;             
 	private Rectangle decompressedPartR;           
 	private Kdu_region_decompressor decompressor;  
-	private LinkedList regionsList;
+	private LinkedList<Rectangle> regionsList;
 	private ImageView actualView;
 
 
@@ -76,7 +76,7 @@ public class Render implements Runnable {
 	{
 		try {
 			while(!finish && !regionsList.isEmpty()) {
-				Rectangle actualRegion = (Rectangle)regionsList.removeFirst();
+				Rectangle actualRegion = regionsList.removeFirst();
 				if(!actualView.isContentCompleted()) regionsList.add(actualRegion);
 
 				incompletePart.Access_pos().Set_x(actualRegion.x);

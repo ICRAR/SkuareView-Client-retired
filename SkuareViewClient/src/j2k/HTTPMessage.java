@@ -6,7 +6,7 @@ import java.util.Hashtable;
 public abstract class HTTPMessage
 {
 	/** A hash table with the headers of the message */
-	private Hashtable headers = new Hashtable();
+	private Hashtable<String, String> headers = new Hashtable<String, String>();
 	
 
 	/**
@@ -49,7 +49,7 @@ public abstract class HTTPMessage
 	/**
 		Returns an <code>Enumeration</code> with all the headers keys.
 	*/
-	public final Enumeration getHeaders()
+	public final Enumeration<String> getHeaders()
 	{
 		return headers.keys();
 	}

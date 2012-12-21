@@ -13,6 +13,7 @@ public class ImageInput {
 	private int imageWidth;            
 	private int imageHeight;           
 	private int numLayers;             
+	@SuppressWarnings("unused")
 	private int maxNumLayers;          
 	private String imageName;
 

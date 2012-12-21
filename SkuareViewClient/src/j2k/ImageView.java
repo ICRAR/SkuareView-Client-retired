@@ -18,11 +18,11 @@ public class ImageView {
 	private BufferedImage image;        
 	private Rectangle imageROI;         
 	private Rectangle newImageROI;      
-	private ArrayList observers;        
+	private ArrayList<ImageObserver> observers;        
 	private ImageInput imageInput;          
 	boolean completed;                  
 	boolean contentCompleted;           
-	private LinkedList regionsList;     
+	private LinkedList<Rectangle> regionsList;     
 	private int imageWidth;             
 	private int imageHeight; 
 
@@ -32,9 +32,9 @@ public class ImageView {
 		completed = false;
 		imageInput = imageIn;
 		discardLevels = resolution;
-		observers = new ArrayList();
+		observers = new ArrayList<ImageObserver>();
 
-		regionsList = new LinkedList();
+		regionsList = new LinkedList<Rectangle>();
 
 		imageROI = new Rectangle(0, 0, 0, 0);
 		newImageROI = new Rectangle(0, 0, 0, 0);
@@ -79,7 +79,7 @@ public class ImageView {
 		return discardLevels;
 	}
 
-	public LinkedList getRegionsToDecode()
+	public LinkedList<Rectangle> getRegionsToDecode()
 	{
 		return regionsList;
 	}

@@ -103,6 +103,7 @@ public class Reader extends Cache implements Runnable {
 			throw new Exception("Cannot Connect");
 		}
 	}
+	@SuppressWarnings("unused")
 	private boolean readFromTCP() throws IOException, Exception
 	{
 		boolean res = false;

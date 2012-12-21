@@ -1,14 +1,13 @@
 package j2k;
 
-import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
-import org.noos.xing.mydoggy.Content;
 
+@SuppressWarnings("serial")
 public class OpenImage extends JFrame implements ImageWindow  {
 
 	private static String imageName;
@@ -17,6 +16,7 @@ public class OpenImage extends JFrame implements ImageWindow  {
 	private JScrollBar verticalScrollBar;
 	private JScrollBar horizontalScrollBar;
 	
+	//Attempt to open input stream
 	public static JPanel open(String fname)
 	{
 		OpenImage open = new OpenImage();
@@ -41,14 +41,15 @@ public class OpenImage extends JFrame implements ImageWindow  {
 		}
 		return imagePanel;
 	}
+	//constructor
 	public OpenImage()
 	{
-		
+		//Set base frame
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
+		//Add scrollbars to frame
 		verticalScrollBar = new JScrollBar(JScrollBar.VERTICAL,0,0,0,180);
 		verticalScrollBar.setBounds(571, 0, 15, 518);
 		horizontalScrollBar = new JScrollBar(JScrollBar.HORIZONTAL,0,0,0,180);
@@ -56,7 +57,7 @@ public class OpenImage extends JFrame implements ImageWindow  {
 
 		verticalScrollBar.setVisible(false);
 		horizontalScrollBar.setVisible(false);
-
+		//Create new image panel
 		imagePanel = new ImagePanel(this);
 		imagePanel.setBounds(0, 0, 571, 518);
 		JPanel centerPanel = new JPanel();

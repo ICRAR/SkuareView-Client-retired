@@ -6,7 +6,6 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Dimension;
-import java.awt.Container;
 import java.awt.BorderLayout;
 
 import java.awt.event.MouseEvent;
@@ -21,8 +20,6 @@ import java.awt.image.ImageObserver;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
 
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -61,6 +58,7 @@ InternalFrameListener
 
 	public ImagePanel(ImageWindow imageWindow)
 	{
+		//Set initial Values
 		zoomMode = false;
 		panelMoving = false;
 		incrX = 0; incrY = 0;
@@ -118,17 +116,9 @@ InternalFrameListener
 	{
 		closedHandCursor = cur;
 	}
-
+	//Open image function
 	public void openImage(String fname) throws Exception
 	{
-		//if(parentWindow != null) parentWindow.notifyTotalBytes(0);
-
-		//if(openHandCursor != null) setCursor(openHandCursor);
-
-		//if(miniViewFrame != null) {
-		//	miniViewFrame.setVisible(false);
-		//	miniViewFrame = null;
-		//}
 
 		incrX = 0;
 		incrY = 0;
@@ -139,15 +129,12 @@ InternalFrameListener
 
 		j2kImage.open(fname);
 
-		//Dimension size = getSize();
 		Dimension size = new Dimension(320,200);
 
 		mainView = j2kImage.createView(size.width, size.height);
 		mainView.addObserver(this);
 		mainView.make();
 
-		//adjustProgressBars();
-		//showViewFrame();
 	}
 
 	public boolean getZoomMode()
@@ -186,8 +173,6 @@ InternalFrameListener
 			miniView.addObserver(this);
 
 			miniViewFrame = new JPanel();
-			//miniViewFrame.addFrameListener(this);
-			//miniViewFrame.setFrameIcon(null);
 
 			double mainViewScale = mainView.getScale();
 			double miniViewScale = miniView.getScale();
@@ -348,6 +333,7 @@ InternalFrameListener
 		incrY = 0;
 	}
 
+	@SuppressWarnings("static-access")
 	public void mousePressed(MouseEvent e)
 	{
 		if(mainView == null) return;

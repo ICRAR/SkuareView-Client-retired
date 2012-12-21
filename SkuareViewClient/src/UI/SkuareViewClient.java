@@ -2,7 +2,6 @@ package UI;
 import info.clearthought.layout.TableLayout;
 
 import j2k.ImagePanel;
-import j2k.OpenImage;
 
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
@@ -40,6 +39,7 @@ public class SkuareViewClient  {
 	private int index;
 	private String imageName;
 	
+	//create GUI
 	protected void run()
 	{
 		SwingUtilities.invokeLater(new Runnable(){
@@ -49,11 +49,13 @@ public class SkuareViewClient  {
 			}
 		});
 	}
+	//Initialize
 	protected void setUp()
 	{
 		init();
 		initToolWindowManager();
 	}
+	//Start GUI
 	protected void start()
 	{
 		ToolWindow debugTool = toolWindowManager.getToolWindow("Menu");
@@ -63,14 +65,17 @@ public class SkuareViewClient  {
 	}
 	protected void init()
 	{
+		//Create base frame
 		this.frame = new JFrame("SkuareView Client 0.1");
 		this.frame.setSize(640,480);
 		this.frame.setLocation(100,100);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		//Create menu
 		JMenuBar menubar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem openMenuitem = new JMenuItem("Open");
+		//Add function for opening new stream
 		openMenuitem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				GetUrl getUrl = new GetUrl();
@@ -80,6 +85,7 @@ public class SkuareViewClient  {
 			}
 		});
 		fileMenu.add(openMenuitem);
+		//Add Exit option
 		JMenuItem exitMenuitem = new JMenuItem("Exit");
 		exitMenuitem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e)
@@ -89,15 +95,17 @@ public class SkuareViewClient  {
 			}
 		});
 		fileMenu.add(exitMenuitem);
-		
+		//Add Menubar to frame
 		menubar.add(fileMenu);
 		this.frame.setJMenuBar(menubar);
 		
+		//Set main layout
 		this.frame.getContentPane().setLayout(new TableLayout(new double[][]{{0,-1,0},{0,-1,0}}));
 		
 	}
 	protected void initToolWindowManager()
 	{
+		//Create tool window manager
 		MyDoggyToolWindowManager twManager = new MyDoggyToolWindowManager();
 		this.toolWindowManager = twManager;
 		toolbox tb = new toolbox(this);
@@ -106,13 +114,14 @@ public class SkuareViewClient  {
 		
 		for(ToolWindow window : toolWindowManager.getToolWindows())
 			window.setAvailable(true);
-		
+		//Initalize content
 		initContentManager();
 		
 		this.frame.getContentPane().add(twManager,"1,1,");
 	}
 	protected void setupDebugTool()
 	{
+		//Setup debug window
 		ToolWindow debugTool = toolWindowManager.getToolWindow("Menu");
 		debugTool.setVisible(true);
 		
@@ -147,15 +156,17 @@ public class SkuareViewClient  {
 		floatingTypeDescriptor.setAnimating(true);
 	}
 	protected void initContentManager(){
+		//Create new panel
 		JPanel imageContent = new JPanel();
 		ContentManager contentManager = toolWindowManager.getContentManager();
 		Content content = contentManager.addContent("Image Window","Image Title",null,imageContent);
 		content.setToolTipText("Image");
-		
+		//Set up manager
 		setupContentManagerUI();
 	}
 	protected void createNewWindow(JPanel newWindow)
 	{
+		//Create new Image panel
 		String id = imageName + index;
 		String title = imageName;
 		ContentManager contentManager = toolWindowManager.getContentManager();
@@ -165,9 +176,11 @@ public class SkuareViewClient  {
 	}
 	protected void setupContentManagerUI()
 	{
-		TabbedContentManagerUI contentManagerUI = (TabbedContentManagerUI)toolWindowManager.getContentManager().getContentManagerUI();
+		//Set up tab behaviour
+		TabbedContentManagerUI<?> contentManagerUI = (TabbedContentManagerUI<?>)toolWindowManager.getContentManager().getContentManagerUI();
 		contentManagerUI.setShowAlwaysTab(true);
 		contentManagerUI.setTabPlacement(TabbedContentManagerUI.TabPlacement.TOP);
+		//Listen for window event, display popup box for exit
 		contentManagerUI.addContentManagerUIListener(new ContentManagerUIListener(){
 			public boolean contentUIRemoving(ContentManagerUIEvent event){
 				return JOptionPane.showConfirmDialog(frame, "Are you sure?") == JOptionPane.OK_OPTION;
@@ -185,6 +198,7 @@ public class SkuareViewClient  {
 		contentUI.setTransparentDelay(1000);
 	}
 	public static void main(String[] args) {
+		//Main Application method
 		SkuareViewClient client = new SkuareViewClient();
 		try{
 			client.run();
@@ -195,6 +209,7 @@ public class SkuareViewClient  {
 	}
 	public void getContent(boolean activated)
 	{
+		//get content and set zoom mode
 		ContentManager contManager = toolWindowManager.getContentManager();
 		Content selected = contManager.getSelectedContent();
 		if(selected != null)

@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class GetUrl extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

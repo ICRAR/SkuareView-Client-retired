@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 
 
 
+@SuppressWarnings("serial")
 public class toolbox extends JPanel {
 
 	private SkuareViewClient _client;
