@@ -25,7 +25,7 @@ public class Render implements Runnable {
 	private LinkedList<Rectangle> regionsList;
 	private ImageView actualView;
 	private Kdu_thread_env env;
-	private Kdu_thread_queue queue;
+	private Enviroment enviro;
 
 	public Render(ImageInput j2kImage)
 	{
@@ -55,17 +55,16 @@ public class Render implements Runnable {
 		myThread = new Thread(this);
 		myThread.setPriority(Thread.MIN_PRIORITY);
 		myThread.start();
+		
 	}
 
 	public void stop()
 	{
 		if(myThread == null) return;
-		if(env == null) return;
 		finish = true;
-		try{env.Join(queue);} catch(KduException k){}
 		try { myThread.join(); } catch(InterruptedException ex) { }
 		myThread = null;
-		env.Native_destroy();
+		
 	}
 
 	public boolean isStopped()
@@ -81,23 +80,8 @@ public class Render implements Runnable {
 	public void run()
 	{
 		try{
-			
-			int num_threads;
-			try {
-				num_threads = Kdu_global.Kdu_get_num_processors();
-				queue = new Kdu_thread_queue();
-
-				env = new Kdu_thread_env(); // Dispose after compositor
-				env.Create();
-				for (int nt = 1; nt < num_threads; nt++)
-					if (!env.Add_thread())
-						num_threads = nt; // Unable to create all threads requested
-				env.Attach_queue(queue, queue, "queue");
-
-			} catch (KduException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			enviro = new Enviroment();
+			env = enviro.getEnv();
 
 			while(!finish && !regionsList.isEmpty()) {
 				Rectangle actualRegion = regionsList.removeFirst();
@@ -141,13 +125,11 @@ public class Render implements Runnable {
 							incompletePart.Access_size().Get_y()
 							));
 				decompressor.Finish();
-				env.Advance_work_domains();
 				image.unlockCodeStream();
 				Thread.yield();
 			}
-			
+			enviro.Dispose();
 			myThread = null;
-			//env.Destroy();
 
 			if(regionsList.size() == 0)
 				actualView.setCompleted();
