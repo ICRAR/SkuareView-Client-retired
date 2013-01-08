@@ -4,39 +4,55 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class GetUrl extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
+	private JComboBox<String> cbox;
+	private ArrayList<String> previous;
+	private String[] list;
 	public String URL;
 
 	/**
 	 * Create the dialog.
 	 */
-	public GetUrl() {
+	public GetUrl(ArrayList<String> prev) {
+		previous = prev;
 		URL = null;
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 353, 131);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(null);
 		{
 			JLabel lblUrl = new JLabel("URL:");
+			lblUrl.setBounds(53, 30, 28, 16);
 			contentPanel.add(lblUrl);
 		}
 		{
-			textField = new JTextField();
-			contentPanel.add(textField);
-			textField.setColumns(10);
+			if(!previous.isEmpty())
+			{
+				list = new String[previous.size()];
+				previous.toArray(list);
+			}
+			else
+			{
+			list = new String[1];
+			}
+			cbox = new JComboBox<String>(list);
+			cbox.setBounds(93, 24, 210, 27);
+			cbox.setEditable(true);
+			cbox.setEnabled(true);
+			contentPanel.add(cbox);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -46,7 +62,8 @@ public class GetUrl extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						URL = textField.getText();
+						URL = (String) cbox.getSelectedItem();
+						previous.add(URL);
 						setVisible(false);
 					}
 				});
@@ -68,6 +85,7 @@ public class GetUrl extends JDialog {
 	}
 	public String showDialog()
 	{
+		
 		setVisible(true);
 		return URL;
 	}

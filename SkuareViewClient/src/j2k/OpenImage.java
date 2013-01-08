@@ -60,6 +60,7 @@ public class OpenImage extends JFrame implements ImageWindow  {
 		//Create new image panel
 		imagePanel = new ImagePanel(this);
 		imagePanel.setBounds(0, 0, 571, 518);
+		
 		JPanel centerPanel = new JPanel();
 		centerPanel.setBounds(0, 23, 587, 538);
 		centerPanel.setLayout(null);

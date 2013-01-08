@@ -3,9 +3,11 @@ import info.clearthought.layout.TableLayout;
 
 import j2k.ImagePanel;
 
+import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -13,6 +15,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
 import org.noos.xing.mydoggy.Content;
@@ -38,6 +42,7 @@ public class SkuareViewClient  {
 	private ToolWindowManager toolWindowManager;
 	private int index;
 	private String imageName;
+	public ArrayList<String> prev;
 	
 	//create GUI
 	protected void run()
@@ -54,6 +59,7 @@ public class SkuareViewClient  {
 	{
 		init();
 		initToolWindowManager();
+		prev = new ArrayList<String>();
 	}
 	//Start GUI
 	protected void start()
@@ -66,8 +72,8 @@ public class SkuareViewClient  {
 	protected void init()
 	{
 		//Create base frame
-		this.frame = new JFrame("SkuareView Client 0.1");
-		this.frame.setSize(640,480);
+		this.frame = new JFrame("SkuareView Client 0.2");
+		this.frame.setSize(800,600);
 		this.frame.setLocation(100,100);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -78,10 +84,13 @@ public class SkuareViewClient  {
 		//Add function for opening new stream
 		openMenuitem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				GetUrl getUrl = new GetUrl();
+				GetUrl getUrl = new GetUrl(prev);
 				getUrl.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 				imageName = getUrl.showDialog();
-				createNewWindow(j2k.OpenImage.open(imageName));
+				if(!prev.contains(imageName))
+					prev.add(imageName);
+				if(imageName != null && !imageName.isEmpty())
+					createNewWindow(j2k.OpenImage.open(imageName));
 			}
 		});
 		fileMenu.add(openMenuitem);
@@ -92,6 +101,7 @@ public class SkuareViewClient  {
 			{
 				frame.setVisible(false);
 				frame.dispose();
+				System.exit(0);
 			}
 		});
 		fileMenu.add(exitMenuitem);
@@ -169,10 +179,14 @@ public class SkuareViewClient  {
 		//Create new Image panel
 		String id = imageName + index;
 		String title = imageName;
+		JScrollPane pane = new JScrollPane(newWindow);
+		
 		ContentManager contentManager = toolWindowManager.getContentManager();
-		Content content = contentManager.addContent(id,title,null,newWindow);
+		Content content = contentManager.addContent(id,title,null,pane);
 		content.setToolTipText(title);
+		content.setSelected(true);
 		index++;
+		
 	}
 	protected void setupContentManagerUI()
 	{
@@ -214,8 +228,16 @@ public class SkuareViewClient  {
 		Content selected = contManager.getSelectedContent();
 		if(selected != null)
 		{
+			ImagePanel img = null;
 			System.out.println(selected.getId());
-			ImagePanel img = (ImagePanel) selected.getComponent();
+			JScrollPane j = (JScrollPane)selected.getComponent();
+			JViewport v = j.getViewport();
+			Component[] comps = v.getComponents();
+			for(int i = 0; i<comps.length;i++)
+			{
+				if(comps[i].getClass() == ImagePanel.class)
+					img = (ImagePanel)comps[i];
+			}
 			if(!activated)
 			{
 				img.setZoomMode(true);

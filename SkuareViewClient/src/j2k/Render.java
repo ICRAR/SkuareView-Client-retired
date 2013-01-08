@@ -3,13 +3,11 @@ package j2k;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
-import kdu_jni.KduException;
 import kdu_jni.Kdu_coords;
 import kdu_jni.Kdu_dims;
 import kdu_jni.Kdu_global;
 import kdu_jni.Kdu_region_decompressor;
 import kdu_jni.Kdu_thread_env;
-import kdu_jni.Kdu_thread_queue;
 
 public class Render implements Runnable {
 	private ImageInput image;                        

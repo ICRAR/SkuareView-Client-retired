@@ -31,9 +31,6 @@ public class Reader extends Cache implements Runnable {
 		
 		name = image.getImageName();
 		
-		//if(!name.startsWith("jpip://"))
-			//throw new Exception("Unsuable Url");
-		
 		parts = name.substring(7).split("/",2);
 		
 		if(parts.length != 2)
@@ -62,10 +59,6 @@ public class Reader extends Cache implements Runnable {
 				throw new Exception("Error invalid status code");
 			
 			header = res.getHeader("JPIP-cnew");
-			/*
-			if(header == null)
-				throw new Exception("JPIP-cnew not sent by server");
-				*/
 			
 			jpipChannel = null;
 			if(header != null)
@@ -82,13 +75,6 @@ public class Reader extends Cache implements Runnable {
 			}
 			header = res.getHeader("Transfer-Encoding");
 			
-			/*
-			if(header == null)
-				throw new Exception("Only chunked responses are supported");
-
-			if(!header.equals("chunked"))
-				throw new Exception("Only chunked responses are supported");
-			*/
 			if(header == null)
 				readFromTCP();
 			else
@@ -200,7 +186,6 @@ public class Reader extends Cache implements Runnable {
 			roi += "," + (int)(image.getRealHeight() * (actualView.getScale() / 100.0));
 			roi += ",round-up";
 
-			//req.setURI("/" + jpipPath + "?cid=" + jpipChannel + "&len=" + MAX_LEN + roi);
 			req.setURI("/" + jpipPath + "?cid=" + jpipChannel + roi);
 			
 			if(!socket.isConnected()) socket.reconnect();
