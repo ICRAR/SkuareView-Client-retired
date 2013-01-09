@@ -36,7 +36,7 @@ public class toolbox extends JPanel {
 		tglbtnTool.setVerticalAlignment(SwingConstants.TOP);
 		add(tglbtnTool);
 		
-		final JToggleButton tglbtnTool_1 = new JToggleButton("Tool 2");
+		final JToggleButton tglbtnTool_1 = new JToggleButton("Pixel Colour");
 		tglbtnTool_1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(tglbtnTool_1.isSelected())
