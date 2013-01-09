@@ -1,6 +1,7 @@
 package UI;
 import info.clearthought.layout.TableLayout;
 
+import j2k.ImageLayer;
 import j2k.ImagePanel;
 
 import java.awt.Component;
@@ -233,6 +234,7 @@ public class SkuareViewClient  {
 			JScrollPane j = (JScrollPane)selected.getComponent();
 			JViewport v = j.getViewport();
 			Component[] comps = v.getComponents();
+			//Find the ImagePanel
 			for(int i = 0; i<comps.length;i++)
 			{
 				if(comps[i].getClass() == ImagePanel.class)
@@ -251,6 +253,52 @@ public class SkuareViewClient  {
 		{
 			System.out.println("Nothing to select");
 		}
+	}
+	public void showLayer(boolean show)
+	{
+		//Get Content
+		ContentManager contManager = toolWindowManager.getContentManager();
+		Content selected = contManager.getSelectedContent();
+		if(selected != null)
+		{
+			ImagePanel img = null;
+			ImageLayer layer = null;
+			System.out.println(selected.getId());
+			JScrollPane j = (JScrollPane)selected.getComponent();
+			JViewport v = j.getViewport();
+			Component[] comps = v.getComponents();
+			//Find either ImagePanel or ImageLayer
+			for(int i = 0; i<comps.length;i++)
+			{
+				if(comps[i].getClass() == ImagePanel.class)
+					img = (ImagePanel)comps[i];
+				if(comps[i].getClass() == ImageLayer.class)
+					layer = (ImageLayer)comps[i];
+			}
+			if(show)
+			{
+				//Create new ImageLayer
+				layer = new ImageLayer(img.getBufferedImage(),img);
+				//Change Visibility
+				layer.setVisible(true);
+				img.setVisible(false);
+				v.add(layer);
+				v.update(v.getGraphics());
+			}
+			else
+			{
+				//Hide Layer
+				layer.setVisible(false);
+				layer.invalidate();
+				//Return ImagePanel
+				img = layer.getImagePanel();
+				img.setVisible(true);
+				v.add(img);
+				v.update(v.getGraphics());
+			}
+			j.update(j.getGraphics());
+		}
+		
 	}
 
 }

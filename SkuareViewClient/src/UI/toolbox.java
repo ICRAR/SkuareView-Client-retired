@@ -36,7 +36,19 @@ public class toolbox extends JPanel {
 		tglbtnTool.setVerticalAlignment(SwingConstants.TOP);
 		add(tglbtnTool);
 		
-		JToggleButton tglbtnTool_1 = new JToggleButton("Tool 2");
+		final JToggleButton tglbtnTool_1 = new JToggleButton("Tool 2");
+		tglbtnTool_1.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(tglbtnTool_1.isSelected())
+				{
+					_client.showLayer(true);
+				}
+				else
+				{
+					_client.showLayer(false);
+				}
+			}
+		});
 		tglbtnTool_1.setBounds(43, 39, 84, 29);
 		add(tglbtnTool_1);
 		

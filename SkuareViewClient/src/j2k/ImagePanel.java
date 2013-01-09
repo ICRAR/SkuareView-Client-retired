@@ -16,6 +16,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseMotionListener;
 
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
 import javax.swing.JPanel;
@@ -157,6 +158,10 @@ InternalFrameListener
 	public Dimension getImageRealSize()
 	{
 		return new Dimension(j2kImage.getRealWidth(), j2kImage.getRealHeight());
+	}
+	public BufferedImage getBufferedImage()
+	{
+		return mainView.getImage();
 	}
 
 	public double getScale()
