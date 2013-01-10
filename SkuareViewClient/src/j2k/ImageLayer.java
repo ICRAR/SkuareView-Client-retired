@@ -48,21 +48,21 @@ public class ImageLayer extends JPanel{
 				//System.out.println("Pixel: " + pixelnum + " Red: " + red + " Green: " + green + " Blue: " + blue + " Alpha: " + alpha);
 				
 				//Split Intensity mapping between colours - TODO: Create dynamic way of assigning these variables
-				if(intensity > 170)
+				if(intensity > 220)
 				{
 					Color c = new Color(intensity,0,0);
 					image.setRGB(i,j,c.getRGB());
 				}
 				else
-				if( intensity >= 130)
+				if( intensity >= 80)
 				{
-					Color c = new Color(0,intensity,0);
+					Color c = new Color(0,intensity+35,0);
 					image.setRGB(i, j, c.getRGB());
 				}
 				else
-				if(intensity < 130)
+				if(intensity < 80)
 				{
-					Color c = new Color(0,0,intensity);
+					Color c = new Color(0,0,intensity+175);
 					image.setRGB(i, j, c.getRGB());
 				}
 				

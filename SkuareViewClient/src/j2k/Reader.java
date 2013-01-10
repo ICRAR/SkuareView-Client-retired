@@ -1,6 +1,7 @@
 package j2k;
 
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.net.SocketException;
 
 public class Reader extends Cache implements Runnable {
@@ -45,8 +46,9 @@ public class Reader extends Cache implements Runnable {
 			
 			socket = new HTTPSocket();
 			host = parts[0];
-			socket.connect(host);
 			
+			socket.connect(host);
+			socket.setSoTimeout(300000);
 			req.setURI("/" + parts[1] + "?cnew=jpip-ht&type=jpp-stream&len=" + MAX_LEN);
 			
 			socket.send(req);
@@ -195,8 +197,8 @@ public class Reader extends Cache implements Runnable {
 					socket.send(req);
 				}catch(SocketException s)
 				{
-					socket.close();
-					socket.reconnect();
+					//socket.close();
+					//socket.reconnect();
 					socket.send(req);
 				}
 				res = (HTTPResponse)socket.receive();

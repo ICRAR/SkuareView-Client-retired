@@ -3,6 +3,8 @@ package j2k;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
+import org.apache.log4j.Logger;
+
 import kdu_jni.Kdu_coords;
 import kdu_jni.Kdu_dims;
 import kdu_jni.Kdu_global;
@@ -24,6 +26,8 @@ public class Render implements Runnable {
 	private ImageView actualView;
 	private Kdu_thread_env env;
 	private Enviroment enviro;
+	private static Logger logger = Logger.getLogger(Render.class);
+	private int loops;
 
 	public Render(ImageInput j2kImage)
 	{
@@ -31,8 +35,8 @@ public class Render implements Runnable {
 		bufferSize = 0;
 		myThread = null;
 		image = j2kImage;
-		nextBufferSize = 100000;
-
+		nextBufferSize = 16384000;
+		
 		incompletePart = new Kdu_dims();
 		decompressedPart = new Kdu_dims();
 		decompressedPartR = new Rectangle();
@@ -51,7 +55,7 @@ public class Render implements Runnable {
 		finish = false;
 
 		myThread = new Thread(this);
-		myThread.setPriority(Thread.MIN_PRIORITY);
+		myThread.setPriority(Thread.NORM_PRIORITY);
 		myThread.start();
 		
 	}
@@ -80,8 +84,10 @@ public class Render implements Runnable {
 		try{
 			enviro = new Enviroment();
 			env = enviro.getEnv();
+			loops = 0;
 
 			while(!finish && !regionsList.isEmpty()) {
+				loops++;
 				Rectangle actualRegion = regionsList.removeFirst();
 				if(!actualView.isContentCompleted()) regionsList.add(actualRegion);
 
@@ -94,11 +100,13 @@ public class Render implements Runnable {
 					bufferSize = nextBufferSize;
 					buffer = new int[bufferSize];
 				}
+				//logger.debug("Buffer size: " + bufferSize + " Loop: "+loops);
 
 				image.lockCodeStream();
 
 				decompressor.Start(image.getCodestream(), image.getChannels(), -1,image.getDiscardLevels(), 0, incompletePart, image.getExpansion(), new Kdu_coords(1, 1),false, Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS,	false, env);
 
+				
 				while(!finish && decompressor.Process(buffer, new Kdu_coords(0, 0), 0, 0,
 						bufferSize, incompletePart,
 						decompressedPart)) {
@@ -112,16 +120,15 @@ public class Render implements Runnable {
 
 					actualView.updateNewRegion(decompressedPartR, buffer);
 				}
-
-				if(incompletePart.Access_size().Get_x() != 0 &&
-						incompletePart.Access_size().Get_y() != 0)
-
+				//logger.debug("Incomplete X: "+ incompletePart.Access_size().Get_x() + " Y: " + incompletePart.Access_size().Get_y());
+				if(incompletePart.Access_size().Get_x() != 0 &&	incompletePart.Access_size().Get_y() != 0)
 					regionsList.add(new Rectangle(
 							incompletePart.Access_pos().Get_x(),
 							incompletePart.Access_pos().Get_y(),
 							incompletePart.Access_size().Get_x(),
 							incompletePart.Access_size().Get_y()
 							));
+				//logger.debug("regionList size " + regionsList.size());
 				decompressor.Finish();
 				image.unlockCodeStream();
 				Thread.yield();

@@ -4,6 +4,7 @@ import info.clearthought.layout.TableLayout;
 import j2k.ImageLayer;
 import j2k.ImagePanel;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
@@ -44,7 +45,7 @@ public class SkuareViewClient  {
 	private int index;
 	private String imageName;
 	public ArrayList<String> prev;
-	
+
 	//create GUI
 	protected void run()
 	{
@@ -77,7 +78,7 @@ public class SkuareViewClient  {
 		this.frame.setSize(800,600);
 		this.frame.setLocation(100,100);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		//Create menu
 		JMenuBar menubar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
@@ -109,10 +110,10 @@ public class SkuareViewClient  {
 		//Add Menubar to frame
 		menubar.add(fileMenu);
 		this.frame.setJMenuBar(menubar);
-		
+
 		//Set main layout
 		this.frame.getContentPane().setLayout(new TableLayout(new double[][]{{0,-1,0},{0,-1,0}}));
-		
+
 	}
 	protected void initToolWindowManager()
 	{
@@ -122,12 +123,12 @@ public class SkuareViewClient  {
 		toolbox tb = new toolbox(this);
 		toolWindowManager.registerToolWindow("Menu", "", null, tb,ToolWindowAnchor.RIGHT);
 		toolWindowManager.registerToolWindow("Console","",null,new JPanel(),ToolWindowAnchor.BOTTOM);
-		
+
 		for(ToolWindow window : toolWindowManager.getToolWindows())
 			window.setAvailable(true);
 		//Initalize content
 		initContentManager();
-		
+
 		this.frame.getContentPane().add(twManager,"1,1,");
 	}
 	protected void setupDebugTool()
@@ -135,12 +136,12 @@ public class SkuareViewClient  {
 		//Setup debug window
 		ToolWindow debugTool = toolWindowManager.getToolWindow("Menu");
 		debugTool.setVisible(true);
-		
+
 		RepresentativeAnchorDescriptor<ToolWindow> representativeAnchorDescriptor = debugTool.getRepresentativeAnchorDescriptor();
 		representativeAnchorDescriptor.setPreviewEnabled(true);
 		representativeAnchorDescriptor.setPreviewDelay(1500);
 		representativeAnchorDescriptor.setPreviewTransparentRatio(0.4f);
-		
+
 		DockedTypeDescriptor dockedTypeDescriptor = (DockedTypeDescriptor) debugTool.getTypeDescriptor(ToolWindowType.DOCKED);
 		dockedTypeDescriptor.setAnimating(true);
 		dockedTypeDescriptor.setHideRepresentativeButtonOnVisible(true);
@@ -148,14 +149,14 @@ public class SkuareViewClient  {
 		dockedTypeDescriptor.setPopupMenuEnabled(true);
 
 		dockedTypeDescriptor.setAnimating(true);
-		
+
 		SlidingTypeDescriptor slidingTypeDescriptor = (SlidingTypeDescriptor) debugTool.getTypeDescriptor(ToolWindowType.SLIDING);
 		slidingTypeDescriptor.setEnabled(true);
 		slidingTypeDescriptor.setTransparentMode(true);
 		slidingTypeDescriptor.setTransparentRatio(0.8f);
 		slidingTypeDescriptor.setTransparentDelay(0);
 		slidingTypeDescriptor.setAnimating(true);
-		
+
 		FloatingTypeDescriptor floatingTypeDescriptor = (FloatingTypeDescriptor) debugTool.getTypeDescriptor(ToolWindowType.FLOATING);
 		floatingTypeDescriptor.setEnabled(true);
 		floatingTypeDescriptor.setLocation(150, 200);
@@ -180,14 +181,18 @@ public class SkuareViewClient  {
 		//Create new Image panel
 		String id = imageName + index;
 		String title = imageName;
-		JScrollPane pane = new JScrollPane(newWindow);
+		ImageContainer container = new ImageContainer();
+		newWindow.setVisible(true);
+		container.add(newWindow,BorderLayout.CENTER);
+		container.setVisible(true);
 		
 		ContentManager contentManager = toolWindowManager.getContentManager();
-		Content content = contentManager.addContent(id,title,null,pane);
+		Content content = contentManager.addContent(id,title,null,container);
 		content.setToolTipText(title);
 		content.setSelected(true);
+		container.setBounds(container.getParent().getBounds());
 		index++;
-		
+
 	}
 	protected void setupContentManagerUI()
 	{
@@ -201,11 +206,11 @@ public class SkuareViewClient  {
 				return JOptionPane.showConfirmDialog(frame, "Are you sure?") == JOptionPane.OK_OPTION;
 			}
 			public void contentUIDetached(ContentManagerUIEvent event){
-				
+
 			}
 		});
 		TabbedContentUI contentUI = (TabbedContentUI) toolWindowManager.getContentManager().getContent(0).getContentUI();
-		
+
 		contentUI.setCloseable(true);
 		contentUI.setDetachable(true);
 		contentUI.setTransparentMode(true);
@@ -231,9 +236,8 @@ public class SkuareViewClient  {
 		{
 			ImagePanel img = null;
 			System.out.println(selected.getId());
-			JScrollPane j = (JScrollPane)selected.getComponent();
-			JViewport v = j.getViewport();
-			Component[] comps = v.getComponents();
+			ImageContainer container = (ImageContainer)selected.getComponent();
+			Component[] comps = container.getComponents();
 			//Find the ImagePanel
 			for(int i = 0; i<comps.length;i++)
 			{
@@ -264,9 +268,8 @@ public class SkuareViewClient  {
 			ImagePanel img = null;
 			ImageLayer layer = null;
 			System.out.println(selected.getId());
-			JScrollPane j = (JScrollPane)selected.getComponent();
-			JViewport v = j.getViewport();
-			Component[] comps = v.getComponents();
+			ImageContainer container = (ImageContainer)selected.getComponent();
+			Component[] comps = container.getComponents();
 			//Find either ImagePanel or ImageLayer
 			for(int i = 0; i<comps.length;i++)
 			{
@@ -278,27 +281,35 @@ public class SkuareViewClient  {
 			if(show)
 			{
 				//Create new ImageLayer
-				layer = new ImageLayer(img.getBufferedImage(),img);
-				//Change Visibility
-				layer.setVisible(true);
-				img.setVisible(false);
-				v.add(layer);
-				v.update(v.getGraphics());
+				if(layer == null)
+				{
+					layer = new ImageLayer(img.getBufferedImage(),img);
+					layer.setVisible(true);
+					img.setVisible(false);
+					container.add(layer);
+				}
+				else
+				{
+					//Change Visibility
+					layer.setVisible(true);
+					img.setVisible(false);
+				}
+
+				container.validate();
 			}
 			else
 			{
+
+				img.setVisible(true);
 				//Hide Layer
 				layer.setVisible(false);
-				layer.invalidate();
-				//Return ImagePanel
-				img = layer.getImagePanel();
-				img.setVisible(true);
-				v.add(img);
-				v.update(v.getGraphics());
+				container.remove(layer);
+
+				img.update(img.getGraphics());
+				container.validate();
 			}
-			j.update(j.getGraphics());
 		}
-		
+
 	}
 
 }
