@@ -198,7 +198,7 @@ public class Reader extends Cache implements Runnable {
 				}catch(SocketException s)
 				{
 					//socket.close();
-					//socket.reconnect();
+					socket.reconnect();
 					socket.send(req);
 				}
 				res = (HTTPResponse)socket.receive();

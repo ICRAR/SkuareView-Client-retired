@@ -23,6 +23,7 @@ import javax.swing.SwingUtilities;
 
 import org.noos.xing.mydoggy.Content;
 import org.noos.xing.mydoggy.ContentManager;
+import org.noos.xing.mydoggy.ContentManagerListener;
 import org.noos.xing.mydoggy.ContentManagerUIListener;
 import org.noos.xing.mydoggy.DockedTypeDescriptor;
 import org.noos.xing.mydoggy.FloatingTypeDescriptor;
@@ -34,6 +35,7 @@ import org.noos.xing.mydoggy.ToolWindow;
 import org.noos.xing.mydoggy.ToolWindowAnchor;
 import org.noos.xing.mydoggy.ToolWindowManager;
 import org.noos.xing.mydoggy.ToolWindowType;
+import org.noos.xing.mydoggy.event.ContentManagerEvent;
 import org.noos.xing.mydoggy.event.ContentManagerUIEvent;
 import org.noos.xing.mydoggy.plaf.MyDoggyToolWindowManager;
 
@@ -42,6 +44,7 @@ public class SkuareViewClient  {
 
 	private JFrame frame;
 	private ToolWindowManager toolWindowManager;
+	private toolbox tb;
 	private int index;
 	private String imageName;
 	public ArrayList<String> prev;
@@ -120,7 +123,7 @@ public class SkuareViewClient  {
 		//Create tool window manager
 		MyDoggyToolWindowManager twManager = new MyDoggyToolWindowManager();
 		this.toolWindowManager = twManager;
-		toolbox tb = new toolbox(this);
+		tb = new toolbox(this);
 		toolWindowManager.registerToolWindow("Menu", "", null, tb,ToolWindowAnchor.RIGHT);
 		toolWindowManager.registerToolWindow("Console","",null,new JPanel(),ToolWindowAnchor.BOTTOM);
 
@@ -173,6 +176,41 @@ public class SkuareViewClient  {
 		ContentManager contentManager = toolWindowManager.getContentManager();
 		Content content = contentManager.addContent("Image Window","Image Title",null,imageContent);
 		content.setToolTipText("Image");
+
+		contentManager.addContentManagerListener(new ContentManagerListener(){
+
+			@Override
+			public void contentSelected(ContentManagerEvent arg0) {
+				ImagePanel img = null;
+				Content selected = toolWindowManager.getContentManager().getSelectedContent();
+				if(selected != null)
+				{
+					ImageContainer cont = (ImageContainer)selected.getComponent();
+					Component[] comps = cont.getComponents();
+					//Find either ImagePanel
+					for(int i = 0; i<comps.length;i++)
+					{
+						if(comps[i].getClass() == ImagePanel.class)
+							img = (ImagePanel)comps[i];
+					}
+					if(img!=null)
+					{
+						tb.setMiniView(img.showViewFrame());
+					}
+				}
+			}
+			@Override
+			public void contentAdded(ContentManagerEvent arg0) {
+
+
+			}
+			@Override
+			public void contentRemoved(ContentManagerEvent arg0) {
+
+
+			}
+
+		});
 		//Set up manager
 		setupContentManagerUI();
 	}
@@ -185,7 +223,7 @@ public class SkuareViewClient  {
 		newWindow.setVisible(true);
 		container.add(newWindow,BorderLayout.CENTER);
 		container.setVisible(true);
-		
+
 		ContentManager contentManager = toolWindowManager.getContentManager();
 		Content content = contentManager.addContent(id,title,null,container);
 		content.setToolTipText(title);
@@ -268,7 +306,7 @@ public class SkuareViewClient  {
 			ImagePanel img = null;
 			ImageLayer layer = null;
 			System.out.println(selected.getId());
-			ImageContainer container = (ImageContainer)selected.getComponent();
+			final ImageContainer container = (ImageContainer)selected.getComponent();
 			Component[] comps = container.getComponents();
 			//Find either ImagePanel or ImageLayer
 			for(int i = 0; i<comps.length;i++)
@@ -294,23 +332,27 @@ public class SkuareViewClient  {
 					layer.setVisible(true);
 					img.setVisible(false);
 				}
-
-				container.validate();
 			}
 			else
 			{
-
 				img.setVisible(true);
 				//Hide Layer
 				layer.setVisible(false);
 				container.remove(layer);
-
-				img.update(img.getGraphics());
-				container.validate();
+				
 			}
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run()
+				{
+					container.revalidate();
+				}
+			});
 		}
 
 	}
+	public void ShowMiniView()
+	{
 
+	}
 }
 

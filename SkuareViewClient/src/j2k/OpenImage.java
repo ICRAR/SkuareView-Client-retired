@@ -84,4 +84,8 @@ public class OpenImage extends JFrame implements ImageWindow  {
 		// TODO Auto-generated method stub
 		
 	}
+	public JPanel getMiniView()
+	{
+		return imagePanel.showViewFrame();
+	}
 }

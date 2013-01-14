@@ -169,9 +169,9 @@ InternalFrameListener
 		return (100.0 / (double)(1 << mainView.getResolution()));
 	}
 
-	public void showViewFrame()
+	public JPanel showViewFrame()
 	{
-		if(!j2kImage.isOpened()) return;
+		if(!j2kImage.isOpened()) return null;
 
 		if(miniViewFrame == null) {
 			miniView = j2kImage.createView(miniViewWidth, miniViewWidth);
@@ -221,7 +221,8 @@ InternalFrameListener
 			miniView.make();
 		}
 
-		miniViewFrame.setLocation(5, 5);
+		//miniViewFrame.setLocation(5, 5);
+		return miniViewFrame;
 	}
 
 	public void reloadImage() 
