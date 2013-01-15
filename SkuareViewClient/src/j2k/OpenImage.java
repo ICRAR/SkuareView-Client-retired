@@ -22,6 +22,7 @@ public class OpenImage extends JFrame implements ImageWindow  {
 		OpenImage open = new OpenImage();
 		imageName = fname;
 		imagePanel = new ImagePanel(open);
+		imagePanel.setName(fname);
 		if(fname != null)
 		{
 			try{

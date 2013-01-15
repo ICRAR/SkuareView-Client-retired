@@ -195,7 +195,15 @@ public class SkuareViewClient  {
 					}
 					if(img!=null)
 					{
-						tb.setMiniView(img.showViewFrame());
+						String name = img.getName();
+						Worker worker = new Worker(img,"miniview",tb,name);
+						try {
+							worker.doInBackground();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						//tb.setMiniView(img.showViewFrame());
 					}
 				}
 			}
@@ -221,7 +229,7 @@ public class SkuareViewClient  {
 		String title = imageName;
 		ImageContainer container = new ImageContainer();
 		newWindow.setVisible(true);
-		container.add(newWindow,BorderLayout.CENTER);
+		container.add(newWindow,"image");
 		container.setVisible(true);
 
 		ContentManager contentManager = toolWindowManager.getContentManager();
@@ -282,13 +290,12 @@ public class SkuareViewClient  {
 				if(comps[i].getClass() == ImagePanel.class)
 					img = (ImagePanel)comps[i];
 			}
-			if(!activated)
-			{
-				img.setZoomMode(true);
-			}
-			else
-			{
-				img.setZoomMode(false);
+			Worker worker = new Worker(img,"zoom",activated);
+			try {
+				worker.doInBackground();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		else
@@ -303,50 +310,13 @@ public class SkuareViewClient  {
 		Content selected = contManager.getSelectedContent();
 		if(selected != null)
 		{
-			ImagePanel img = null;
-			ImageLayer layer = null;
-			System.out.println(selected.getId());
-			final ImageContainer container = (ImageContainer)selected.getComponent();
-			Component[] comps = container.getComponents();
-			//Find either ImagePanel or ImageLayer
-			for(int i = 0; i<comps.length;i++)
-			{
-				if(comps[i].getClass() == ImagePanel.class)
-					img = (ImagePanel)comps[i];
-				if(comps[i].getClass() == ImageLayer.class)
-					layer = (ImageLayer)comps[i];
+			Worker worker = new Worker(selected,"layer",show);
+			try {
+				worker.doInBackground();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			if(show)
-			{
-				//Create new ImageLayer
-				if(layer == null)
-				{
-					layer = new ImageLayer(img.getBufferedImage(),img);
-					layer.setVisible(true);
-					img.setVisible(false);
-					container.add(layer);
-				}
-				else
-				{
-					//Change Visibility
-					layer.setVisible(true);
-					img.setVisible(false);
-				}
-			}
-			else
-			{
-				img.setVisible(true);
-				//Hide Layer
-				layer.setVisible(false);
-				container.remove(layer);
-				
-			}
-			SwingUtilities.invokeLater(new Runnable(){
-				public void run()
-				{
-					container.revalidate();
-				}
-			});
 		}
 
 	}

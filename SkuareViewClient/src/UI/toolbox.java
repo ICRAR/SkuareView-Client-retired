@@ -6,6 +6,8 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Component;
 
 
 
@@ -62,13 +64,26 @@ public class toolbox extends JPanel {
 		miniViewPanel.setBounds(20, 174, 125, 120);
 		miniViewPanel.setVisible(true);
 		add(miniViewPanel);
-		miniViewPanel.setLayout(new BorderLayout(0, 0));
+		miniViewPanel.setLayout(new CardLayout(0, 0));
 
 	}
-	public void setMiniView(JPanel view)
+	public void setMiniView(JPanel view,String id)
 	{
-		view.setBounds(miniViewPanel.getBounds());
-		miniViewPanel.add(view,BorderLayout.CENTER);
-		miniViewPanel.setVisible(true);
+		boolean found = false;
+		CardLayout layout = (CardLayout)miniViewPanel.getLayout();
+		Component[] comps = miniViewPanel.getComponents();
+		for(int i = 0; i < comps.length; i++)
+		{
+			if(comps[i].equals(view))
+				found = true;
+		}
+		
+		if(!found)
+		{
+			view.setBounds(miniViewPanel.getBounds());
+			miniViewPanel.add(view,id);
+			miniViewPanel.setVisible(true);
+		}
+		layout.show(miniViewPanel, id);
 	}
 }
