@@ -108,6 +108,7 @@ public class ImageInput {
 			imageWidth = imageRealWidth = varDim.Access_size().Get_x();
 			imageHeight = imageRealHeight = varDim.Access_size().Get_y();
 			numLayers = maxNumLayers = codestream.Get_max_tile_layers();
+			codestream.Augment_cache_threshold((1*1024*1024));
 			codestream.Set_persistent();
 
 		} catch(KduException ex) {

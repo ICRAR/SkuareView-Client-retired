@@ -504,5 +504,9 @@ InternalFrameListener
 		else
 			return false;
 	}
+	public ImageInput getRaw()
+	{
+		return j2kImage;
+	}
 
 }

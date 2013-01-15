@@ -9,8 +9,10 @@ import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -99,6 +101,15 @@ public class SkuareViewClient  {
 			}
 		});
 		fileMenu.add(openMenuitem);
+		JMenuItem saveMenuitem = new JMenuItem("Save");
+		saveMenuitem.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SaveImageDialog save = new SaveImageDialog(getImageContent());
+			}
+		});
+		fileMenu.add(saveMenuitem);
+
 		//Add Exit option
 		JMenuItem exitMenuitem = new JMenuItem("Exit");
 		exitMenuitem.addActionListener(new ActionListener(){
@@ -320,9 +331,26 @@ public class SkuareViewClient  {
 		}
 
 	}
-	public void ShowMiniView()
-	{
 
+	public ImagePanel getImageContent()
+	{
+		ContentManager contManager = toolWindowManager.getContentManager();
+		Content selected = contManager.getSelectedContent();
+		ImagePanel img = null;
+		if(selected != null)
+		{
+			
+			ImageContainer cont = (ImageContainer)selected.getComponent();
+			Component[] comps = cont.getComponents();
+			for(Component c : comps)
+			{
+				if(c.getClass() == ImagePanel.class){
+					img = (ImagePanel)c;
+				}
+			}
+		}
+		return img;
 	}
+	
 }
 
