@@ -2,92 +2,87 @@ package j2k;
 
 import java.awt.Rectangle;
 import java.util.LinkedList;
-
-import org.apache.log4j.Logger;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import kdu_jni.Kdu_coords;
 import kdu_jni.Kdu_dims;
 import kdu_jni.Kdu_global;
 import kdu_jni.Kdu_region_decompressor;
 import kdu_jni.Kdu_thread_env;
+import kdu_jni.Kdu_thread_queue;
 
-public class Render implements Runnable {
-	private ImageInput image;                        
-	private Thread myThread;                       
-	private boolean finish;                        
-	private int buffer[];                          
-	private int bufferSize;                        
-	private int nextBufferSize;                    
-	private Kdu_dims incompletePart;               
-	private Kdu_dims decompressedPart;             
-	private Rectangle decompressedPartR;           
-	private Kdu_region_decompressor decompressor;  
+public class RenderWorker implements Runnable {
+
+	private ImageInput image;
+	private int bufferSize;
+	private int nextBufferSize;
+	private boolean finish;
+	private int buffer[];
+	private Kdu_dims incompletePart;
+	private Kdu_dims decompressedPart;
+	private Rectangle decompressedPartR;
+	private Kdu_region_decompressor decompressor;
 	private LinkedList<Rectangle> regionsList;
 	private ImageView actualView;
 	private Kdu_thread_env env;
 	private Enviroment enviro;
-	private static Logger logger = Logger.getLogger(Render.class);
-	private int loops;
-
-	public Render(ImageInput j2kImage)
+	private ExecutorService exec;
+	private Kdu_thread_queue queue;
+	
+	public RenderWorker(ImageInput j2kimage)
 	{
-
 		bufferSize = 0;
-		myThread = null;
-		image = j2kImage;
+		exec = null;
 		nextBufferSize = 16384000;
+		image = j2kimage;
 		
 		incompletePart = new Kdu_dims();
 		decompressedPart = new Kdu_dims();
 		decompressedPartR = new Rectangle();
-
+		
 		decompressor = new Kdu_region_decompressor();
+	
 	}
-
 	public void start()
 	{
-		if(myThread != null) return;
+		if(exec != null) return;
 		if(image.getActualView() == null) return;
-
 		actualView = image.getActualView();
 		regionsList = actualView.getRegionsToDecode();
-
 		finish = false;
-
-		myThread = new Thread(this);
-		myThread.setPriority(Thread.NORM_PRIORITY);
-		myThread.start();
+		
+		enviro = new Enviroment();
+		env = enviro.getEnv();
+		
+		exec = Executors.newCachedThreadPool();
+		exec.execute(this);
 		
 	}
-
 	public void stop()
 	{
-		if(myThread == null) return;
+		if(exec == null) return;
 		finish = true;
-		try { myThread.join(); } catch(InterruptedException ex) { }
-		myThread = null;
-		
+		try{
+			exec.shutdown();
+		}catch(Exception ex){};
+		exec = null;
 	}
-
 	public boolean isStopped()
 	{
-		return (myThread == null);
+		return (exec.isShutdown());
 	}
-
 	public void setBufferSize(int size)
 	{
 		nextBufferSize = size;
 	}
-
 	public void run()
 	{
 		try{
-			enviro = new Enviroment(32);
-			env = enviro.getEnv();
-			loops = 0;
+			
 
 			while(!finish && !regionsList.isEmpty()) {
-				loops++;
+				//loops++;
 				Rectangle actualRegion = regionsList.removeFirst();
 				if(!actualView.isContentCompleted()) regionsList.add(actualRegion);
 
@@ -104,7 +99,7 @@ public class Render implements Runnable {
 
 				image.lockCodeStream();
 
-				decompressor.Start(image.getCodestream(), image.getChannels(), -1,image.getDiscardLevels(), 0, incompletePart, image.getExpansion(), new Kdu_coords(1, 1),false, Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS,	false, env);
+				decompressor.Start(image.getCodestream(), image.getChannels(), -1,image.getDiscardLevels(), 0, incompletePart, image.getExpansion(), new Kdu_coords(1, 1),false, Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS,	false, null,null);
 
 				
 				while(!finish && decompressor.Process(buffer, new Kdu_coords(0, 0), 0, 0,
@@ -134,8 +129,7 @@ public class Render implements Runnable {
 				Thread.yield();
 			}
 			enviro.Dispose();
-			myThread = null;
-
+			exec.shutdown();
 			if(regionsList.size() == 0)
 				actualView.setCompleted();
 

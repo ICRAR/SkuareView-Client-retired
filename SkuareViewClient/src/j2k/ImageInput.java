@@ -108,7 +108,7 @@ public class ImageInput {
 			imageWidth = imageRealWidth = varDim.Access_size().Get_x();
 			imageHeight = imageRealHeight = varDim.Access_size().Get_y();
 			numLayers = maxNumLayers = codestream.Get_max_tile_layers();
-			codestream.Augment_cache_threshold((1*1024*1024));
+			codestream.Augment_cache_threshold((4*1024*1024));
 			codestream.Set_persistent();
 
 		} catch(KduException ex) {
@@ -180,6 +180,7 @@ public class ImageInput {
 	    try {
 	      codestream.Apply_input_restrictions(0, maxComponents, discardLevels, 0, null,
 					Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS);
+	      codestream.Augment_cache_threshold(100*1024*1024);
 				
 	      codestream.Get_dims(referenceComponent, varDim);
 
@@ -197,6 +198,7 @@ public class ImageInput {
 	      codestream.Map_region(0, region, realRegion);
 	      codestream.Apply_input_restrictions(0, maxComponents, discardLevels, 0, realRegion, 
 					Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS);
+	      codestream.Augment_cache_threshold(100*1024*1024);
 
 	    } catch(KduException ex) { 
 				System.err.println("Internal Kakadu error:");

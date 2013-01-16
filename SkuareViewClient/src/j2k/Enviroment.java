@@ -3,6 +3,7 @@ package j2k;
 import kdu_jni.KduException;
 import kdu_jni.Kdu_global;
 import kdu_jni.Kdu_thread_env;
+import kdu_jni.Kdu_thread_queue;
 
 public class Enviroment {
 
@@ -19,8 +20,26 @@ public class Enviroment {
 			for (int nt = 1; nt < num_threads; nt++)
 				if (!env.Add_thread())
 					num_threads = nt;
+			
 
 		} catch (KduException e) {
+		}
+	}
+	public Enviroment(int threads)
+	{
+		try{
+		num_threads = threads;
+		
+		env = new Kdu_thread_env();
+		env.Create();
+		for(int nt = 1; nt < num_threads; nt++)
+		{
+			if(!env.Add_thread())
+				num_threads = nt;
+		}
+		}catch(KduException e)
+		{
+			
 		}
 	}
 	public Kdu_thread_env getEnv()
