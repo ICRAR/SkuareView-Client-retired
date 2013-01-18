@@ -283,8 +283,8 @@ public class SkuareViewClient  {
 		try{
 			OS = System.getProperty("os.name");
 			WorkingDir = System.getProperty("user.dir");
-			System.load(WorkingDir + "/lib/libkdu_v72R.dylib");
-			System.load(WorkingDir + "/lib/libkdu_a72R.dylib");
+			//System.load(WorkingDir + "/lib/libkdu_v72R.dylib");
+			//System.load(WorkingDir + "/lib/libkdu_a72R.dylib");
 			System.out.println(System.getProperty("java.class.path"));
 			client.run();
 		}catch(Exception e)
