@@ -20,7 +20,7 @@ public class Console extends JPanel  {
 		ScrollPane scrollpane = new ScrollPane();
 		scrollpane.add(textPane);
 		add(scrollpane, BorderLayout.CENTER);
-		textPane.setText("SkuareViewClient 0.3 Console" + "\n================================" );
+		textPane.setText("SkuareViewClient 0.3 Console (" + SkuareViewClient.OS + ", " + SkuareViewClient.WorkingDir + ")" + "\n================================" );
 	}
 	public void println(String input)
 	{

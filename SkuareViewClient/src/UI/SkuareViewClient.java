@@ -39,6 +39,8 @@ import org.noos.xing.mydoggy.plaf.MyDoggyToolWindowManager;
 
 public class SkuareViewClient  {
 
+	public static String WorkingDir;
+	public static String OS;
 	private JFrame frame;
 	private ToolWindowManager toolWindowManager;
 	private toolbox tb;
@@ -279,6 +281,11 @@ public class SkuareViewClient  {
 		//Main Application method
 		SkuareViewClient client = new SkuareViewClient();
 		try{
+			OS = System.getProperty("os.name");
+			WorkingDir = System.getProperty("user.dir");
+			System.load(WorkingDir + "/lib/libkdu_v72R.dylib");
+			System.load(WorkingDir + "/lib/libkdu_a72R.dylib");
+			System.out.println(System.getProperty("java.class.path"));
 			client.run();
 		}catch(Exception e)
 		{
