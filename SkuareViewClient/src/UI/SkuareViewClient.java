@@ -1,26 +1,21 @@
 package UI;
 import info.clearthought.layout.TableLayout;
 
-import j2k.ImageLayer;
+
 import j2k.ImagePanel;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 
 import org.noos.xing.mydoggy.Content;
@@ -50,6 +45,7 @@ public class SkuareViewClient  {
 	private int index;
 	private String imageName;
 	public ArrayList<String> prev;
+	public static Console console;
 
 	//create GUI
 	protected void run()
@@ -79,7 +75,7 @@ public class SkuareViewClient  {
 	protected void init()
 	{
 		//Create base frame
-		this.frame = new JFrame("SkuareView Client 0.2");
+		this.frame = new JFrame("SkuareView Client 0.3");
 		this.frame.setSize(800,600);
 		this.frame.setLocation(100,100);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,7 +93,10 @@ public class SkuareViewClient  {
 				if(!prev.contains(imageName))
 					prev.add(imageName);
 				if(imageName != null && !imageName.isEmpty())
+				{
+					console.println("Opening: " + imageName);
 					createNewWindow(j2k.OpenImage.open(imageName));
+				}
 			}
 		});
 		fileMenu.add(openMenuitem);
@@ -105,6 +104,7 @@ public class SkuareViewClient  {
 		saveMenuitem.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				@SuppressWarnings("unused")
 				SaveImageDialog save = new SaveImageDialog(getImageContent());
 			}
 		});
@@ -135,8 +135,9 @@ public class SkuareViewClient  {
 		MyDoggyToolWindowManager twManager = new MyDoggyToolWindowManager();
 		this.toolWindowManager = twManager;
 		tb = new toolbox(this);
+		console = new Console();
 		toolWindowManager.registerToolWindow("Menu", "", null, tb,ToolWindowAnchor.RIGHT);
-		toolWindowManager.registerToolWindow("Console","",null,new JPanel(),ToolWindowAnchor.BOTTOM);
+		toolWindowManager.registerToolWindow("Console","",null,console,ToolWindowAnchor.BOTTOM);
 
 		for(ToolWindow window : toolWindowManager.getToolWindows())
 			window.setAvailable(true);
@@ -292,7 +293,15 @@ public class SkuareViewClient  {
 		if(selected != null)
 		{
 			ImagePanel img = null;
-			System.out.println(selected.getId());
+			if(!activated)
+			{
+				console.println("Zoom Enabled for " + selected.getId());
+			}
+			else
+			{
+				console.println("Zoom Disabled for " + selected.getId());
+			}
+			//System.out.println(selected.getId());
 			ImageContainer container = (ImageContainer)selected.getComponent();
 			Component[] comps = container.getComponents();
 			//Find the ImagePanel
@@ -311,7 +320,8 @@ public class SkuareViewClient  {
 		}
 		else
 		{
-			System.out.println("Nothing to select");
+			console.println("Nothing to select");
+			//System.out.println("Nothing to select");
 		}
 	}
 	public void showLayer(boolean show)
@@ -331,7 +341,6 @@ public class SkuareViewClient  {
 		}
 
 	}
-
 	public ImagePanel getImageContent()
 	{
 		ContentManager contManager = toolWindowManager.getContentManager();

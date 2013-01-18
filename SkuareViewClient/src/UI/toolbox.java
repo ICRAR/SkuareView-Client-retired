@@ -5,7 +5,6 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 

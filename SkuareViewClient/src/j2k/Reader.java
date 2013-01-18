@@ -1,7 +1,6 @@
 package j2k;
 
 import java.io.IOException;
-import java.net.SocketAddress;
 import java.net.SocketException;
 
 public class Reader extends Cache implements Runnable {

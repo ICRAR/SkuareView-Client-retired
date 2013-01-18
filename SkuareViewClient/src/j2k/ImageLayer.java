@@ -35,7 +35,9 @@ public class ImageLayer extends JPanel{
 			{
 				//Separate out ARGB values
 				int pixel = image.getRGB(i, j);
+				@SuppressWarnings("unused")
 				int pixelnum = pixel & 0xFF;
+				@SuppressWarnings("unused")
 				int alpha = (pixel >> 24) & 0xFF;
 				int red = ((pixel >> 16) & 0xFF) ;
 				int green = ((pixel >> 8) & 0xFF);
@@ -59,7 +61,9 @@ public class ImageLayer extends JPanel{
 			{
 				//Separate out ARGB values
 				int pixel = image.getRGB(i, j);
+				@SuppressWarnings("unused")
 				int pixelnum = pixel & 0xFF;
+				@SuppressWarnings("unused")
 				int alpha = (pixel >> 24) & 0xFF;
 				int red = ((pixel >> 16) & 0xFF) ;
 				int green = ((pixel >> 8) & 0xFF);

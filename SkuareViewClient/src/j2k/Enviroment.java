@@ -3,7 +3,6 @@ package j2k;
 import kdu_jni.KduException;
 import kdu_jni.Kdu_global;
 import kdu_jni.Kdu_thread_env;
-import kdu_jni.Kdu_thread_queue;
 
 public class Enviroment {
 

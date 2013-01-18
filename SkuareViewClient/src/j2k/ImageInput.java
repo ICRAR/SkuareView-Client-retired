@@ -1,5 +1,6 @@
 package j2k;
 
+import UI.SkuareViewClient;
 import kdu_jni.*;
 
 public class ImageInput {
@@ -108,6 +109,10 @@ public class ImageInput {
 			imageWidth = imageRealWidth = varDim.Access_size().Get_x();
 			imageHeight = imageRealHeight = varDim.Access_size().Get_y();
 			numLayers = maxNumLayers = codestream.Get_max_tile_layers();
+			SkuareViewClient.console.println("Number of Layers: " + numLayers);
+			int num_comps = codestream.Get_num_components();
+			SkuareViewClient.console.println("Number of Components: " + num_comps);
+			
 			codestream.Augment_cache_threshold((4*1024*1024));
 			codestream.Set_persistent();
 
@@ -180,7 +185,7 @@ public class ImageInput {
 	    try {
 	      codestream.Apply_input_restrictions(0, maxComponents, discardLevels, 0, null,
 					Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS);
-	      codestream.Augment_cache_threshold(100*1024*1024);
+	      codestream.Augment_cache_threshold(1*1024*1024);
 				
 	      codestream.Get_dims(referenceComponent, varDim);
 
@@ -198,7 +203,7 @@ public class ImageInput {
 	      codestream.Map_region(0, region, realRegion);
 	      codestream.Apply_input_restrictions(0, maxComponents, discardLevels, 0, realRegion, 
 					Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS);
-	      codestream.Augment_cache_threshold(100*1024*1024);
+	      codestream.Augment_cache_threshold(1*1024*1024);
 
 	    } catch(KduException ex) { 
 				System.err.println("Internal Kakadu error:");

@@ -3,7 +3,7 @@ package j2k;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import kdu_jni.Kdu_coords;
 import kdu_jni.Kdu_dims;
@@ -26,8 +26,8 @@ public class Render implements Runnable {
 	private ImageView actualView;
 	private Kdu_thread_env env;
 	private Enviroment enviro;
-	private static Logger logger = Logger.getLogger(Render.class);
-	private int loops;
+	//private static Logger logger = Logger.getLogger(Render.class);
+	//private int loops;
 
 	public Render(ImageInput j2kImage)
 	{
@@ -82,12 +82,12 @@ public class Render implements Runnable {
 	public void run()
 	{
 		try{
-			enviro = new Enviroment(32);
+			enviro = new Enviroment();
 			env = enviro.getEnv();
-			loops = 0;
+			//loops = 0;
 
 			while(!finish && !regionsList.isEmpty()) {
-				loops++;
+				//loops++;
 				Rectangle actualRegion = regionsList.removeFirst();
 				if(!actualView.isContentCompleted()) regionsList.add(actualRegion);
 

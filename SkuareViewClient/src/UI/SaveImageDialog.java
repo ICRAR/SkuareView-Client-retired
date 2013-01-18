@@ -5,18 +5,15 @@ import j2k.ImagePanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
-import kdu_jni.Jp2_family_tgt;
-import kdu_jni.Jpx_codestream_target;
-import kdu_jni.Jpx_target;
-import kdu_jni.KduException;
 
+
+@SuppressWarnings("serial")
 public class SaveImageDialog extends JPanel implements ActionListener{
 
 	public SaveImageDialog(ImagePanel img)
