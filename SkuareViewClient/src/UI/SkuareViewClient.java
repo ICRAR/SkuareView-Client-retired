@@ -283,9 +283,40 @@ public class SkuareViewClient  {
 		try{
 			OS = System.getProperty("os.name");
 			WorkingDir = System.getProperty("user.dir");
-			//System.load(WorkingDir + "/lib/libkdu_v72R.dylib");
-			//System.load(WorkingDir + "/lib/libkdu_a72R.dylib");
-			System.out.println(System.getProperty("java.class.path"));
+			//System.loadLibrary("kdu_v72R");
+			//System.loadLibrary("kdu_a72R");
+			if(OS.toUpperCase().contains("MAC"))
+			{
+				System.load(WorkingDir + "/lib/libkdu_v72R.dylib");
+				System.load(WorkingDir + "/lib/libkdu_a72R.dylib");
+				System.load(WorkingDir + "/lib/libkdu_v72D.dylib");
+				System.load(WorkingDir + "/lib/libkdu_a72D.dylib");
+				System.load(WorkingDir + "/lib/libkdu_jni.jnilib");
+				System.load(WorkingDir + "/lib/libkdu_jni_dbg.jnilib");
+			}
+			else
+			if(OS.toUpperCase().contains("WIN"))
+			{
+				System.load(WorkingDir + "/lib/kdu_v72D.dll");
+				System.load(WorkingDir + "/lib/kdu_a72D.dll");
+				System.load(WorkingDir + "/lib/kdu_jni.dll");
+				
+			}
+			else
+			if(OS.toUpperCase().contains("LINUX"))
+			{
+				System.load(WorkingDir + "/lib/libkdu_v72R.so");
+				System.load(WorkingDir + "/lib/libkdu_a72R.so");
+				System.load(WorkingDir + "/lib/libkdu_jni.so");
+			}
+			else
+			{
+				System.out.println("Unsupported Operating System Detected");
+				System.exit(1);
+			}
+			
+			//System.out.println(System.getProperty("java.class.path"));
+			//System.out.println(System.getProperty("java.library.path"));
 			client.run();
 		}catch(Exception e)
 		{
@@ -355,7 +386,7 @@ public class SkuareViewClient  {
 		ImagePanel img = null;
 		if(selected != null)
 		{
-			
+
 			ImageContainer cont = (ImageContainer)selected.getComponent();
 			Component[] comps = cont.getComponents();
 			for(Component c : comps)
@@ -367,6 +398,6 @@ public class SkuareViewClient  {
 		}
 		return img;
 	}
-	
+
 }
 

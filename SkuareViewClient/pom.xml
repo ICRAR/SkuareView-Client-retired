@@ -16,6 +16,17 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>UI.SkuareViewClient</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
@@ -24,50 +35,56 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>com.googlecode.mavennatives</groupId>
-				<artifactId>maven-nativedependencies-plugin</artifactId>
-				<version>0.0.7</version>
+				<groupId>org.dstovall</groupId>
+				<artifactId>onejar-maven-plugin</artifactId>
+				<version>1.4.4</version>
 				<executions>
 					<execution>
-						<id>unpacknatives</id>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>UI.SkuareViewClient</mainClass>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-						<id>bundle-project-sources</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
 						<configuration>
-							<descriptors>
-								<descriptor>src/META-INF/assembly.xml</descriptor>
-							</descriptors>
+							<onejarVersion>0.97</onejarVersion>
+							<attachToBuild>true</attachToBuild>
+							<classifier>onejar</classifier>
 						</configuration>
+						<goals>
+							<goal>one-jar</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>onejar-maven-plugin.googlecode.com</id>
+			<url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.mydoggy</groupId>
+			<artifactId>mydoggy-api</artifactId>
+			<version>1.5.0-beta-r1389</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.mydoggy</groupId>
+			<artifactId>mydoggy-plaf</artifactId>
+			<version>1.5.0-beta-r1389</version>
+		</dependency>
+		<dependency>
+			<groupId>tablelayout</groupId>
+			<artifactId>TableLayout</artifactId>
+			<version>20050920</version>
+		</dependency>
+		<dependency>
+			<groupId>kdu_jni</groupId>
+			<artifactId>kdu_jni</artifactId>
+			<version>7.2</version>
+			<type>jar</type>
+		</dependency>
+	</dependencies>
 </project>
