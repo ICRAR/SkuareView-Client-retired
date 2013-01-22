@@ -1,9 +1,12 @@
 package j2k;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
@@ -41,8 +44,11 @@ InternalFrameListener
 	private boolean panelMoving;
 	private boolean mousePressed;
 	private Rectangle miniViewRect;
-
+	private Rectangle selectedArea;
+	private Point startPoint;
+	private Point endPoint;
 	private boolean zoomMode;
+	private boolean selectMode;
 	private JPanel miniViewPanel;
 	private JScrollBar verScroll;
 	private JScrollBar horScroll;
@@ -142,12 +148,22 @@ InternalFrameListener
 	{
 		return zoomMode;
 	}
+	public boolean getSelectMode()
+	{
+		return selectMode;
+	}
 
 	public void setZoomMode(boolean mode)
 	{
 		zoomMode = mode;
 		if(zoomMode) { if(zoomCursor != null) setCursor(zoomCursor); }
 		else { if(openHandCursor != null) setCursor(openHandCursor); }
+	}
+	public void setSelectMode(boolean mode)
+	{
+		selectMode = mode;
+
+
 	}
 
 	public Dimension getImageSize()
@@ -212,7 +228,7 @@ InternalFrameListener
 			miniViewPanel.addMouseListener(this);
 			miniViewPanel.addMouseMotionListener(this);
 
-			
+
 			miniViewFrame.setLayout(new BorderLayout());
 			miniViewFrame.add(miniViewPanel, BorderLayout.CENTER);
 
@@ -239,46 +255,44 @@ InternalFrameListener
 
 		if(mainView != null)
 			g.drawImage(mainView.getImage(), incrX, incrY, this);
+		if(selectMode)
+		{
+			Graphics2D g2 = (Graphics2D)g;
+			g2.setStroke(new BasicStroke(2));
+			
+			if(selectedArea != null)
+			{
+				g2.setPaint(Color.red);
+				g2.draw(selectedArea);
+			}
+			else
+			if(startPoint != null && endPoint != null)
+			{
+				g2.setPaint(Color.blue);
+				Rectangle r = MakeRect(startPoint.x,startPoint.y,endPoint.x,endPoint.y);
+				g2.draw(r);
+			}
+		}
+
 	}
 
 	public void mouseDragged(MouseEvent e)
 	{
 		if(mainView == null) return;
 
-		if(e.getSource() == this) {
-			if(zoomMode) return;
-
-			incrX += (e.getX() - pressX);
-			incrY += (e.getY() - pressY);
-
-			Rectangle imageROI = mainView.getBounds();
-
-			int minX = mainView.getImageWidth() - (imageROI.x + imageROI.width);
-			if(incrX > imageROI.x) incrX = imageROI.x;
-			if(incrX < -minX) incrX = -minX;
-
-			int minY = mainView.getImageHeight() - (imageROI.y + imageROI.height);
-			if(incrY > imageROI.y) incrY = imageROI.y;
-			if(incrY < -minY) incrY = -minY;
-
-			if(horScroll != null) horScroll.setValue(imageROI.x - incrX);
-			if(verScroll != null) verScroll.setValue(imageROI.y - incrY);
-
-			pressX = e.getX();
-			pressY = e.getY();
-
-			updateMiniView();
+		if(selectMode)
+		{
+			endPoint = new Point(e.getX(),e.getY());
 			repaint();
+		}
+		else
+			if(e.getSource() == this) {
+				if(zoomMode) return;
 
-		} else if(e.getSource() == miniViewPanel) {
-			if(panelMoving) {
-				double mainViewScale = mainView.getScale();
-				double miniViewScale = miniView.getScale();
+				incrX += (e.getX() - pressX);
+				incrY += (e.getY() - pressY);
 
 				Rectangle imageROI = mainView.getBounds();
-
-				incrX -= (int)(((double)(e.getX() - pressX) / miniViewScale) * mainViewScale);
-				incrY -= (int)(((double)(e.getY() - pressY) / miniViewScale) * mainViewScale);
 
 				int minX = mainView.getImageWidth() - (imageROI.x + imageROI.width);
 				if(incrX > imageROI.x) incrX = imageROI.x;
@@ -296,8 +310,36 @@ InternalFrameListener
 
 				updateMiniView();
 				repaint();
+
+
+			} else if(e.getSource() == miniViewPanel) {
+				if(panelMoving) {
+					double mainViewScale = mainView.getScale();
+					double miniViewScale = miniView.getScale();
+
+					Rectangle imageROI = mainView.getBounds();
+
+					incrX -= (int)(((double)(e.getX() - pressX) / miniViewScale) * mainViewScale);
+					incrY -= (int)(((double)(e.getY() - pressY) / miniViewScale) * mainViewScale);
+
+					int minX = mainView.getImageWidth() - (imageROI.x + imageROI.width);
+					if(incrX > imageROI.x) incrX = imageROI.x;
+					if(incrX < -minX) incrX = -minX;
+
+					int minY = mainView.getImageHeight() - (imageROI.y + imageROI.height);
+					if(incrY > imageROI.y) incrY = imageROI.y;
+					if(incrY < -minY) incrY = -minY;
+
+					if(horScroll != null) horScroll.setValue(imageROI.x - incrX);
+					if(verScroll != null) verScroll.setValue(imageROI.y - incrY);
+
+					pressX = e.getX();
+					pressY = e.getY();
+
+					updateMiniView();
+					repaint();
+				}
 			}
-		}
 	}
 
 	public void mouseMoved(MouseEvent e)
@@ -318,25 +360,34 @@ InternalFrameListener
 	{
 		if(mainView == null) return;
 
-		if(e.getSource() == this) {
-			if(zoomMode) return;
-			else {
-				if(openHandCursor != null) setCursor(openHandCursor);
+		if(selectMode)
+		{
+			selectedArea = MakeRect(startPoint.x,startPoint.y,e.getX(),e.getY());
+			repaint();
+		}
+		else
+		{
+
+			if(e.getSource() == this) {
+				if(zoomMode) return;
+				else {
+					if(openHandCursor != null) setCursor(openHandCursor);
+					panelMoving = false;
+				}
+
+			} else if(e.getSource() == miniViewPanel) {
+				if(openHandCursor != null) miniViewPanel.setCursor(openHandCursor);
 				panelMoving = false;
 			}
 
-		} else if(e.getSource() == miniViewPanel) {
-			if(openHandCursor != null) miniViewPanel.setCursor(openHandCursor);
-			panelMoving = false;
+			mainView.setLocation(mainView.getX() - incrX, mainView.getY() - incrY);
+			adjustProgressBars();
+
+			mousePressed = false;
+
+			incrX = 0;
+			incrY = 0;
 		}
-
-		mainView.setLocation(mainView.getX() - incrX, mainView.getY() - incrY);
-		adjustProgressBars();
-
-		mousePressed = false;
-
-		incrX = 0;
-		incrY = 0;
 	}
 
 	@SuppressWarnings("static-access")
@@ -348,34 +399,43 @@ InternalFrameListener
 		pressY = e.getY();
 
 		mousePressed = true;
+		if(selectMode)
+		{
+			startPoint = new Point(e.getX(),e.getY());
+			endPoint = startPoint;
+			repaint();
+		}
+		else
+		{
 
-		if(e.getSource() == miniViewPanel) {
-			if(miniViewRect.contains(e.getPoint())) {
-				if(closedHandCursor != null) miniViewPanel.setCursor(closedHandCursor);
-				panelMoving = true;
-			}
+			if(e.getSource() == miniViewPanel) {
+				if(miniViewRect.contains(e.getPoint())) {
+					if(closedHandCursor != null) miniViewPanel.setCursor(closedHandCursor);
+					panelMoving = true;
+				}
 
-		} if(e.getSource() == this) {
-			if(!zoomMode) {
-				if(closedHandCursor != null) setCursor(closedHandCursor);
-				panelMoving = true;
+			} if(e.getSource() == this) {
+				if(!zoomMode) {
+					if(closedHandCursor != null) setCursor(closedHandCursor);
+					panelMoving = true;
 
-			} else {
-				mousePressed = false;
+				} else {
+					mousePressed = false;
 
-				Dimension size = getSize();
-				if((e.getModifiers() & e.BUTTON1_MASK) != 0)
-					mainView.changeResolution(pressX, pressY, size.width, size.height, -1);
-				else if((e.getModifiers() & e.BUTTON3_MASK) != 0)
-					mainView.changeResolution(pressX, pressY, size.width, size.height, 1);
+					Dimension size = getSize();
+					if((e.getModifiers() & e.BUTTON1_MASK) != 0)
+						mainView.changeResolution(pressX, pressY, size.width, size.height, -1);
+					else if((e.getModifiers() & e.BUTTON3_MASK) != 0)
+						mainView.changeResolution(pressX, pressY, size.width, size.height, 1);
 
-				adjustProgressBars();
-				updateMiniView();
-				repaint();
+					adjustProgressBars();
+					updateMiniView();
+					repaint();
 
-				if(parentWindow != null) {
-					Dimension imageSize = getImageRealSize();
-					parentWindow.notifyImageInfo("Image: " + imageSize.width + "x" + imageSize.height + "  Scale: " + getScale() + "%");
+					if(parentWindow != null) {
+						Dimension imageSize = getImageRealSize();
+						parentWindow.notifyImageInfo("Image: " + imageSize.width + "x" + imageSize.height + "  Scale: " + getScale() + "%");
+					}
 				}
 			}
 		}
@@ -383,7 +443,7 @@ InternalFrameListener
 
 	public void adjustZoom()
 	{
-		
+
 	}
 	private void adjustProgressBars()
 	{
@@ -507,6 +567,10 @@ InternalFrameListener
 	public ImageInput getRaw()
 	{
 		return j2kImage;
+	}
+	public Rectangle MakeRect(int x1, int y1, int x2, int y2)
+	{
+		return new Rectangle(Math.min(x1, x2), Math.min(y1, y2),Math.abs(x1-x2),Math.abs(y1-y2));
 	}
 
 }

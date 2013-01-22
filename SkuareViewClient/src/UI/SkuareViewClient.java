@@ -398,6 +398,11 @@ public class SkuareViewClient  {
 		}
 		return img;
 	}
+	public void setSelect(boolean activated)
+	{
+		ImagePanel img = getImageContent();
+		img.setSelectMode(activated);
+	}
 
 }
 
