@@ -18,7 +18,7 @@ public class HTTPRequest extends HTTPMessage
 	*/
 	public HTTPRequest(String type) throws ProtocolException
 	{
-		if(!type.equals("GET")) throw new ProtocolException("HTTP request type not supported");
+		//if(!type.equals("GET")&&!type.equals("POST")) throw new ProtocolException("HTTP request type not supported");
 		this.type = type;
 	}
 

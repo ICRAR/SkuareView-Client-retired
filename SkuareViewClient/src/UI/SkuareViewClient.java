@@ -228,7 +228,29 @@ public class SkuareViewClient  {
 			}
 			@Override
 			public void contentRemoved(ContentManagerEvent arg0) {
-
+				ImagePanel img = null;
+				Content selected = toolWindowManager.getContentManager().getSelectedContent();
+				if(selected != null)
+				{
+					ImageContainer cont = (ImageContainer)selected.getComponent();
+					Component[] comps = cont.getComponents();
+					//Find either ImagePanel
+					for(int i = 0; i<comps.length;i++)
+					{
+						if(comps[i].getClass() == ImagePanel.class)
+							img = (ImagePanel)comps[i];
+					}
+					if(img!=null)
+					{
+						try {
+							
+							img.getRaw().getReader().closeSocket();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
 
 			}
 
@@ -364,20 +386,8 @@ public class SkuareViewClient  {
 	}
 	public void showLayer(boolean show)
 	{
-		//Get Content
-		ContentManager contManager = toolWindowManager.getContentManager();
-		Content selected = contManager.getSelectedContent();
-		if(selected != null)
-		{
-			Worker worker = new Worker(selected,"layer",show);
-			try {
-				worker.doInBackground();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
+		ImagePanel img = getImageContent();
+		img.setColorMap(show);
 	}
 	public ImagePanel getImageContent()
 	{

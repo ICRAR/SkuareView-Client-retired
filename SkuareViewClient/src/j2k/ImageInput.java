@@ -112,8 +112,7 @@ public class ImageInput {
 			SkuareViewClient.console.println("Number of Layers: " + numLayers);
 			int num_comps = codestream.Get_num_components();
 			SkuareViewClient.console.println("Number of Components: " + num_comps);
-			
-			codestream.Augment_cache_threshold((4*1024*1024));
+
 			codestream.Set_persistent();
 
 		} catch(KduException ex) {
@@ -136,7 +135,8 @@ public class ImageInput {
 		Kdu_coords ref_subs = new Kdu_coords();
 		Kdu_coords subs = new Kdu_coords();
 		codestream.Get_subsampling(referenceComponent, ref_subs);
-		Kdu_coords min_subs = new Kdu_coords(); min_subs.Assign(ref_subs);
+		Kdu_coords min_subs = new Kdu_coords(); 
+		min_subs.Assign(ref_subs);
 
 		for(int c = 0; c < channels.Get_num_channels(); c++)
 		{
@@ -185,7 +185,6 @@ public class ImageInput {
 	    try {
 	      codestream.Apply_input_restrictions(0, maxComponents, discardLevels, 0, null,
 					Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS);
-	      codestream.Augment_cache_threshold(1*1024*1024);
 				
 	      codestream.Get_dims(referenceComponent, varDim);
 
@@ -203,7 +202,6 @@ public class ImageInput {
 	      codestream.Map_region(0, region, realRegion);
 	      codestream.Apply_input_restrictions(0, maxComponents, discardLevels, 0, realRegion, 
 					Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS);
-	      codestream.Augment_cache_threshold(1*1024*1024);
 
 	    } catch(KduException ex) { 
 				System.err.println("Internal Kakadu error:");

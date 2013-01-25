@@ -61,6 +61,8 @@ InternalFrameListener
 
 	private int miniViewWidth;
 	private int miniViewHeight;
+	
+	private boolean colormap;
 
 
 	public ImagePanel(ImageWindow imageWindow)
@@ -152,6 +154,10 @@ InternalFrameListener
 	{
 		return selectMode;
 	}
+	public boolean getColorMap()
+	{
+		return colormap;
+	}
 
 	public void setZoomMode(boolean mode)
 	{
@@ -162,8 +168,11 @@ InternalFrameListener
 	public void setSelectMode(boolean mode)
 	{
 		selectMode = mode;
-
-
+	}
+	public void setColorMap(boolean mode)
+	{
+		colormap = mode;
+		this.paintComponents(getGraphics());
 	}
 
 	public Dimension getImageSize()
@@ -254,7 +263,12 @@ InternalFrameListener
 		g.fillRect(0, 0, size.width, size.height);
 
 		if(mainView != null)
+		{
+			if(!colormap)
 			g.drawImage(mainView.getImage(), incrX, incrY, this);
+			else
+			g.drawImage(ColorMap(mainView.getImage()),incrX,incrY,this);
+		}
 		if(selectMode)
 		{
 			Graphics2D g2 = (Graphics2D)g;
@@ -274,6 +288,80 @@ InternalFrameListener
 			}
 		}
 
+	}
+	private BufferedImage ColorMap(BufferedImage image)
+	{	
+		int pixelWidth = image.getWidth();
+		int pixelHeight = image.getHeight();
+		int intensity = 0;
+		int lowest = 255;
+		int highest = 0;
+		
+		int threshold1 = 0;
+		int threshold2 = 0;
+		
+		for(int i =0; i < pixelWidth;i++)
+		{
+			for(int j = 0; j < pixelHeight;j++)
+			{
+				//Separate out ARGB values
+				int pixel = image.getRGB(i, j);
+				@SuppressWarnings("unused")
+				int pixelnum = pixel & 0xFF;
+				@SuppressWarnings("unused")
+				int alpha = (pixel >> 24) & 0xFF;
+				int red = ((pixel >> 16) & 0xFF) ;
+				int green = ((pixel >> 8) & 0xFF);
+				int blue = ((pixel >> 0) & 0xFF);
+				intensity = (red+green+blue)/3;
+				//Record Highest and Lowest Intensity values
+				if(intensity > highest)
+					highest = intensity;
+				if(intensity < lowest)
+					lowest = intensity;
+			}
+		}
+		int thres_diff = highest/3;
+		threshold1 = highest - thres_diff;
+		threshold2 = threshold1 - thres_diff;
+		
+		for(int i =0; i < pixelWidth;i++)
+		{
+			for(int j = 0; j < pixelHeight;j++)
+			{
+				//Separate out ARGB values
+				int pixel = image.getRGB(i, j);
+				@SuppressWarnings("unused")
+				int pixelnum = pixel & 0xFF;
+				@SuppressWarnings("unused")
+				int alpha = (pixel >> 24) & 0xFF;
+				int red = ((pixel >> 16) & 0xFF) ;
+				int green = ((pixel >> 8) & 0xFF);
+				int blue = ((pixel >> 0) & 0xFF);
+				intensity = (red+green+blue)/3;
+				
+				if(intensity > threshold1)
+				{
+					Color c = new Color(intensity,0,0);
+					image.setRGB(i,j,c.getRGB());
+				}
+				else
+				if( intensity >= threshold2)
+				{
+					Color c = new Color(0,intensity+(255-threshold1),0);
+					image.setRGB(i, j, c.getRGB());
+				}
+				else
+				if(intensity < threshold2)
+				{
+					Color c = new Color(0,0,intensity+(255-threshold2));
+					image.setRGB(i, j, c.getRGB());
+				}
+				
+			}
+		}
+		
+		return image;
 	}
 
 	public void mouseDragged(MouseEvent e)

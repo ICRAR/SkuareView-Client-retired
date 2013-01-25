@@ -115,6 +115,10 @@ public class HTTPSocket extends Socket
 			throw new ProtocolException("Responses sending not yet supported :-)");
 		}
 	}
+	public void send(String input) throws IOException
+	{
+		getOutputStream().write(input.getBytes());
+	}
 
 	/**
 			Receives a HTTP message from the socket. Currently it is only supported

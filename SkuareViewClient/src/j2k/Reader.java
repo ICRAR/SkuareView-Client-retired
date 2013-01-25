@@ -15,7 +15,7 @@ public class Reader extends Cache implements Runnable {
 	private ImageView actualView;
 	private String host;
 	
-	private static final int MAX_LEN = 2000;
+	private static final int MAX_LEN = 1000;
 	
 	public Reader(ImageInput imageInput) throws Exception
 	{
@@ -40,15 +40,16 @@ public class Reader extends Cache implements Runnable {
 		
 		try{
 			req = new HTTPRequest("GET");
-			req.setHeader("Cache-Control", "no-cache");
-			req.setHeader("Connection","Keep-Alive");
+			req.setHeader("Host", "127.0.0.1:8080");
+			//req.setHeader("Cache-Control", "no-cache");
+			//req.setHeader("Connection","Keep-Alive");
 			
 			socket = new HTTPSocket();
 			host = parts[0];
 			
 			socket.connect(host);
 			socket.setSoTimeout(300000);
-			req.setURI("/" + parts[1] + "?cnew=jpip-ht&type=jpp-stream&len=" + MAX_LEN);
+			req.setURI("/" + parts[1] + "?type=jpp-stream&tid=0&cnew=http-tcp,http&stream=0&len=" + MAX_LEN);
 			
 			socket.send(req);
 			res = (HTTPResponse)socket.receive();
@@ -74,6 +75,22 @@ public class Reader extends Cache implements Runnable {
 				if(jpipChannel == null)
 					throw new Exception("Channel not sent");
 			}
+			//socket.send(jpipChannel);
+			//socket.send("\n");
+			
+			req.clearHeaders();
+			req.setHeader("Host", "127.0.0.1:8080");
+			req.setHeader("Cache-Control", "no-cache");
+			req.setURI("/" + jpipPath + "?cid=" + jpipChannel + "&stream=0&wait=yes");
+			socket.send(req);
+			
+			
+			req = new HTTPRequest("POST");
+			req.setURI("/" + jpipPath);
+			req.setHeader("Content-type", "application/x-www-form-urlencoded");
+			req.setHeader("Content-length", "261");
+			req.setHeader("Cache-Control", "no-cache");
+			
 			header = res.getHeader("Transfer-Encoding");
 			
 			if(header == null)
@@ -225,5 +242,14 @@ public class Reader extends Cache implements Runnable {
 	}
 	public void init() {
 		
+	}
+	public void closeSocket()
+	{
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
