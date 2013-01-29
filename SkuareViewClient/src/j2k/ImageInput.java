@@ -102,19 +102,31 @@ public class ImageInput {
 			else channels.Configure(codestream);
 
 			discardLevels = 0;
-			maxDiscardLevels = codestream.Get_min_dwt_levels();
+			//maxDiscardLevels = codestream.Get_min_dwt_levels();
 			referenceComponent = channels.Get_source_component(0);
 			determineReferenceExpansion();
 			codestream.Get_dims(referenceComponent, varDim);
 			imageWidth = imageRealWidth = varDim.Access_size().Get_x();
 			imageHeight = imageRealHeight = varDim.Access_size().Get_y();
+			
+			
+			codestream.Set_persistent();
+			
+			maxDiscardLevels = codestream.Get_min_dwt_levels();
+			
+			Kdu_coords coord = new Kdu_coords();
+			codestream.Find_tile(referenceComponent, minExpansion, coord);
+			
+			codestream.Create_tile(coord);
+			
 			numLayers = maxNumLayers = codestream.Get_max_tile_layers();
 			SkuareViewClient.console.println("Number of Layers: " + numLayers);
 			int num_comps = codestream.Get_num_components();
 			SkuareViewClient.console.println("Number of Components: " + num_comps);
+			SkuareViewClient.console.println("" + maxDiscardLevels);
 			
-			codestream.Augment_cache_threshold((4*1024*1024));
-			codestream.Set_persistent();
+			//codestream.Augment_cache_threshold((4*1024*1024));
+			
 
 		} catch(KduException ex) {
 			reader = null;
