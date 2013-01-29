@@ -1,10 +1,18 @@
 package j2k;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.SocketException;
 
 public class Reader extends Cache implements Runnable {
 
+	private Socket aux;
+	private BufferedReader auxInput;
+	private PrintWriter auxOutput;
+	
 	private int readData;
 	private boolean finish;
 	private ImageInput image;
@@ -14,6 +22,8 @@ public class Reader extends Cache implements Runnable {
 	private String jpipChannel;
 	private ImageView actualView;
 	private String host;
+	private String auxPort;
+	private String auxResp;
 	
 	private static final int MAX_LEN = 1000;
 	
@@ -70,26 +80,38 @@ public class Reader extends Cache implements Runnable {
 				{
 					if(parts[i].startsWith("cid=")) jpipChannel = parts[i].substring(4);
 					else if(parts[i].startsWith("path=")) jpipPath = parts[i].substring(5);
+					else if(parts[i].startsWith("auxport=")) auxPort = parts[i].substring(8);
 				}
 
 				if(jpipChannel == null)
 					throw new Exception("Channel not sent");
 			}
-			//socket.send(jpipChannel);
-			//socket.send("\n");
+			
+			aux = new Socket(host.substring(0,host.indexOf(':')),Integer.parseInt(auxPort));
+			auxInput = new BufferedReader(new InputStreamReader(aux.getInputStream()));
+			auxOutput = new PrintWriter(aux.getOutputStream(),true);
+			auxOutput.println(jpipChannel + "\r\n");
+			
+			//auxResp = getTCPResp();
+			//System.out.println(auxResp);
 			
 			req.clearHeaders();
-			req.setHeader("Host", "127.0.0.1:8080");
-			req.setHeader("Cache-Control", "no-cache");
 			req.setURI("/" + jpipPath + "?cid=" + jpipChannel + "&stream=0&wait=yes");
+			req.setHeader("Host", host);
+			req.setHeader("Cache-Control", "no-cache");
 			socket.send(req);
 			
+			auxResp = getTCPResp();
+			System.out.println(auxResp);
 			
 			req = new HTTPRequest("POST");
 			req.setURI("/" + jpipPath);
 			req.setHeader("Content-type", "application/x-www-form-urlencoded");
-			req.setHeader("Content-length", "261");
+			//req.setHeader("Content-length", "261");
 			req.setHeader("Cache-Control", "no-cache");
+			
+			socket.send(req);
+			
 			
 			header = res.getHeader("Transfer-Encoding");
 			
@@ -122,9 +144,9 @@ public class Reader extends Cache implements Runnable {
 
 		if(!socket.isConnected()) socket.reconnect();
 		
-		resp = (HTTPResponse)socket.receive();
+		//resp = (HTTPResponse)socket.receive();
 		
-		JpipDataInputStream jpip = new JpipDataInputStream(socket.getInputStream());
+		JpipDataInputStream jpip = new JpipDataInputStream(aux.getInputStream());
 		JpipDataSegment data = new JpipDataSegment();
 		while(jpip.readSegment(data))
 		{
@@ -251,5 +273,19 @@ public class Reader extends Cache implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	private String getTCPResp()
+	{
+		String resp = "";
+		try {
+			while(auxInput.ready())
+			{
+				resp += auxInput.readLine();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resp;
 	}
 }
