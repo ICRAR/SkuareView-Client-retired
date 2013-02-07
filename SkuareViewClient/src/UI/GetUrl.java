@@ -12,7 +12,12 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-
+/**
+ * This class creates and displays a custom dialog window for 
+ * connecting to a JPIP server
+ * @author dmccarthy
+ *
+ */
 @SuppressWarnings("serial")
 public class GetUrl extends JDialog {
 
@@ -23,7 +28,10 @@ public class GetUrl extends JDialog {
 	public String URL;
 
 	/**
-	 * Create the dialog.
+	 * Dialog box constructor
+	 * Remembers previously opened files through the use of a ArrayList of strings
+	 * 
+	 * @param prev		ArrayList<String> previously opened urls
 	 */
 	public GetUrl(ArrayList<String> prev) {
 		previous = prev;
@@ -83,6 +91,11 @@ public class GetUrl extends JDialog {
 			}
 		}
 	}
+	/**
+	 * Shows the dialog and returns a string URL
+	 * 
+	 * @return		String URL
+	 */
 	public String showDialog()
 	{
 		

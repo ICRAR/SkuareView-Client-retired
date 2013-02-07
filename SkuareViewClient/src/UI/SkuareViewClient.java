@@ -36,7 +36,15 @@ import org.noos.xing.mydoggy.event.ContentManagerEvent;
 import org.noos.xing.mydoggy.event.ContentManagerUIEvent;
 import org.noos.xing.mydoggy.plaf.MyDoggyToolWindowManager;
 
+/**
+ SkuareView Client Main Class
+ This class creates and runs the GUI elements of the program as well
+ as the main function where the libraries are specified.
+ 
+@author dmccarthy
+@since 7/2/2013
 
+*/
 public class SkuareViewClient  {
 
 	public static String WorkingDir;
@@ -50,6 +58,10 @@ public class SkuareViewClient  {
 	public static Console console;
 
 	//create GUI
+	/**
+	 * Creates the GUI and starts the 
+	 * Threads to run it.
+	 */
 	protected void run()
 	{
 		SwingUtilities.invokeLater(new Runnable(){
@@ -60,6 +72,10 @@ public class SkuareViewClient  {
 		});
 	}
 	//Initialize
+	/**
+	 * Initializes the Main window, toolbox and console window
+	 * 
+	 */
 	protected void setUp()
 	{
 		init();
@@ -67,6 +83,9 @@ public class SkuareViewClient  {
 		prev = new ArrayList<String>();
 	}
 	//Start GUI
+	/**
+	 * Starts the GUI and creates the toolbox object
+	 */
 	protected void start()
 	{
 		ToolWindow debugTool = toolWindowManager.getToolWindow("Menu");
@@ -74,6 +93,11 @@ public class SkuareViewClient  {
 		index = 1;
 		frame.setVisible(true);
 	}
+	/**
+	 * Initializes the main JFrame, adds the menu bar along with 
+	 * the action listeners for the menu items then sets up 
+	 * the window layout
+	 */
 	protected void init()
 	{
 		//Create base frame
@@ -131,6 +155,9 @@ public class SkuareViewClient  {
 		this.frame.getContentPane().setLayout(new TableLayout(new double[][]{{0,-1,0},{0,-1,0}}));
 
 	}
+	/**
+	 * Creates the Toolbox window and the Console windows
+	 */
 	protected void initToolWindowManager()
 	{
 		//Create tool window manager
@@ -148,6 +175,9 @@ public class SkuareViewClient  {
 
 		this.frame.getContentPane().add(twManager,"1,1,");
 	}
+	/**
+	 * Sets up the window behavour of the Menu toolbox
+	 */
 	protected void setupDebugTool()
 	{
 		//Setup debug window
@@ -184,6 +214,11 @@ public class SkuareViewClient  {
 		floatingTypeDescriptor.setTransparentDelay(1000);
 		floatingTypeDescriptor.setAnimating(true);
 	}
+	/**
+	 * Creates the content Manager which handles the dockable frames,
+	 * also implements the listeners for content being selected and
+	 * displays the miniview.
+	 */
 	protected void initContentManager(){
 		//Create new panel
 		JPanel imageContent = new JPanel();
@@ -236,6 +271,12 @@ public class SkuareViewClient  {
 		//Set up manager
 		setupContentManagerUI();
 	}
+	/**This function creates a new window from a JPanel
+	 * and adds it to the current GUI and sets it as the
+	 * selected window
+	 * 
+	 * @param newWindow
+	 */
 	protected void createNewWindow(JPanel newWindow)
 	{
 		//Create new Image panel
@@ -254,6 +295,10 @@ public class SkuareViewClient  {
 		index++;
 
 	}
+	/**
+	 * Sets up the behavior of the image windows and implements listeners for windows
+	 * being detached
+	 */
 	protected void setupContentManagerUI()
 	{
 		//Set up tab behaviour
@@ -277,6 +322,18 @@ public class SkuareViewClient  {
 		contentUI.setTransparentRatio(0.7f);
 		contentUI.setTransparentDelay(1000);
 	}
+	/**
+	 * Main program method, this detects the current operating system
+	 * and loads the appropriate libraries. It is important to note that the
+	 * library path must be specified in the launcher script for the
+	 * program to be able to find the libraries
+	 * 
+	 * Example: java -Djava.library.path=lib -jar SkuareViewClient.jar
+	 * This would specify that the libraries are stored in a directory /lib
+	 * relative to the location of the jar file.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		//Main Application method
 		SkuareViewClient client = new SkuareViewClient();
@@ -323,6 +380,14 @@ public class SkuareViewClient  {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * This method is used for the toggle buttons to determine if they are
+	 * active or not to a specific window.
+	 * In this implementation it is only used for the Zoom function.
+	 * 
+	 * @param activated		The state of the toggle button
+	 * 
+	 */
 	public void getContent(boolean activated)
 	{
 		//get content and set zoom mode
@@ -362,6 +427,12 @@ public class SkuareViewClient  {
 			//System.out.println("Nothing to select");
 		}
 	}
+	/**
+	 * This function enables the pixel overlay based off the state of the 
+	 * toggle button.
+	 * 
+	 * @param show		State of the toggle button
+	 */
 	public void showLayer(boolean show)
 	{
 		//Get Content
@@ -373,12 +444,17 @@ public class SkuareViewClient  {
 			try {
 				worker.doInBackground();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
 	}
+	/**
+	 * This function finds the imagePanel object that belongs to a
+	 * selected content window and returns the ImagePanel Object.
+	 * 
+	 * @return		Return the ImagePanel associated with this content.
+	 */
 	public ImagePanel getImageContent()
 	{
 		ContentManager contManager = toolWindowManager.getContentManager();
@@ -398,6 +474,11 @@ public class SkuareViewClient  {
 		}
 		return img;
 	}
+	/**
+	 * Sets Select mode based off toggle button state
+	 * 
+	 * @param activated		Toggle Button state.
+	 */
 	public void setSelect(boolean activated)
 	{
 		ImagePanel img = getImageContent();

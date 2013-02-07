@@ -12,10 +12,20 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
 
-
+/**
+ * Creates a custom Save Dialog which saves the currently viewed image to a
+ * standard image format.
+ * @author dmccarthy
+ * @since 7/2/2013
+ */
 @SuppressWarnings("serial")
 public class SaveImageDialog extends JPanel implements ActionListener{
 
+	/**
+	 * Creates the Dialog box then saves the file based off the users input
+	 * 
+	 * @param img		ImagePanel img 	This is the current image area being viewed
+	 */
 	public SaveImageDialog(ImagePanel img)
 	{
 		JFileChooser fc = new JFileChooser();
@@ -44,6 +54,12 @@ public class SaveImageDialog extends JPanel implements ActionListener{
 
 
 }
+/**
+ * Custom Extension FileFilter
+ * 
+ * @author dmccarthy
+ * @since 7/2/2013
+ */
 class ExtensionFileFilter extends FileFilter {
 	  String description;
 
