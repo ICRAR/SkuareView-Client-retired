@@ -431,6 +431,7 @@ public class SkuareViewClient  {
 		}
 		return img;
 	}
+	@SuppressWarnings("unused")
 	public void setSelect(boolean activated)
 	{
 		ImagePanel img = getImageContent();

@@ -16,6 +16,7 @@ public class ImagePanel extends JPanel
 	int[] img_buf;
 	MemoryImageSource image_source;
 	private Kdu_coords _res;
+	@SuppressWarnings("unused")
 	private ImageView mainView;
 
 	public ImagePanel(Kdu_coords view_size) throws KduException

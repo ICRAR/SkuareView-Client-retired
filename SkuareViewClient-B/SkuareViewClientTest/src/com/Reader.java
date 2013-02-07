@@ -3,15 +3,12 @@ package com;
 import java.io.IOException;
 import java.net.SocketException;
 
-import kdu_jni.KduException;
-import kdu_jni.Kdu_coords;
-import kdu_jni.Kdu_dims;
-
 import Engine.ImageView;
 
 
 public class Reader extends Cache implements Runnable {
 
+	@SuppressWarnings("unused")
 	private int readData;
 	private boolean finish;
 	private Thread myThread;
@@ -21,6 +18,7 @@ public class Reader extends Cache implements Runnable {
 	private String host;
 	private ImageView actualView;
 	
+	@SuppressWarnings("unused")
 	private static final int MAX_LEN = 2000;
 	
 	public Reader(String path,ImageView actualView) throws Exception

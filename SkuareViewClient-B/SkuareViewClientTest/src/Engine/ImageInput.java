@@ -19,9 +19,12 @@ public class ImageInput {
 	private Kdu_compressed_source input;
 	private Mutex codestreamMutex;
 	
+	@SuppressWarnings("unused")
 	private Kdu_simple_file_source fileIn;
 	private Jp2_family_src jp2_family;
+	@SuppressWarnings("unused")
 	private Jp2_source jp2_src;
+	@SuppressWarnings("unused")
 	private Jp2_locator jp2_loc;
 	private Jpx_source jpx_src;
 	

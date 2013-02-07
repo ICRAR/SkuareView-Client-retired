@@ -9,11 +9,13 @@ import java.util.LinkedList;
 
 public class ImageView {
 
+	@SuppressWarnings("unused")
 	private int discardLevels;
 	private int[] imageBuffer;
 	private BufferedImage image;
 	private Rectangle imageROI;
 	private Rectangle newImageROI;
+	@SuppressWarnings("unused")
 	private ArrayList<ImageObserver> observers;
 	boolean completed;
 	boolean contentCompleted;

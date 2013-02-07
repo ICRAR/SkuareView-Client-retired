@@ -102,7 +102,7 @@ public class HTTPSocket extends Socket
 
 			str += req.getType() + " " + req.getURI()  + " " + versionText + CRLF;
 
-			for(Enumeration e = req.getHeaders(); e.hasMoreElements();) {
+			for(Enumeration<?> e = req.getHeaders(); e.hasMoreElements();) {
 				key = (String)e.nextElement();
 				str += key + ": ";
 				str += req.getHeader(key) + CRLF;
@@ -133,6 +133,7 @@ public class HTTPSocket extends Socket
 		String parts[];
 
 		InputStream input = getInputStream();
+		@SuppressWarnings("resource")
 		StringInputStream lineInput = new StringInputStream(input);
 
 		line = lineInput.readLine();

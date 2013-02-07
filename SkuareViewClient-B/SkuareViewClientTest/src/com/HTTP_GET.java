@@ -4,9 +4,11 @@ import java.io.IOException;
 
 public class HTTP_GET extends Cache {
 
+	@SuppressWarnings("unused")
 	private int readData;
 	private HTTPSocket socket;
 	
+	@SuppressWarnings("unused")
 	public HTTP_GET(String nameIn)
 	{
 		int i;

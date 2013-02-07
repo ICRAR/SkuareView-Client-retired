@@ -5,6 +5,7 @@ public class OpenImage {
 
 	private static ImagePanel imagePanel;
 	
+	@SuppressWarnings("unused")
 	public static ImagePanel open(String fname)
 	{
 		String imageName = fname;

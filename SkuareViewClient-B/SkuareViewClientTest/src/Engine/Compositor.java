@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.Reader;
 
 import kdu_jni.Jpx_codestream_source;
-import kdu_jni.Jpx_frame;
-import kdu_jni.Jpx_frame_expander;
 import kdu_jni.Jpx_source;
 import kdu_jni.KduException;
 import kdu_jni.Kdu_codestream;
@@ -34,7 +32,9 @@ public class Compositor implements Runnable {
 	private ImagePanel display;
 	private Thread myThread;
 	private Reader inputReader;
+	@SuppressWarnings("unused")
 	private Kdu_istream_ref current_istream;
+	@SuppressWarnings("unused")
 	private ArrayList<Kdu_ilayer_ref> iLayers;
 
 	/**

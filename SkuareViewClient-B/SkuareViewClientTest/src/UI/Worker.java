@@ -9,11 +9,14 @@ import Engine.ImagePanel;
 
 public class Worker extends SwingWorker<String,ImagePanel> {
 
+	@SuppressWarnings("unused")
 	private ImagePanel panel;
 	private String action;
 	private Boolean activated;
+	@SuppressWarnings("unused")
 	private toolbox tb;
 	private Content content;
+	@SuppressWarnings("unused")
 	private String id;
 
 	public Worker(ImagePanel panel,String action,boolean activated)
@@ -35,6 +38,7 @@ public class Worker extends SwingWorker<String,ImagePanel> {
 		this.action = action;
 		this.activated = activated;
 	}
+	@SuppressWarnings("unused")
 	@Override
 	protected String doInBackground() throws Exception {
 		if(action.compareTo("zoom")==0)

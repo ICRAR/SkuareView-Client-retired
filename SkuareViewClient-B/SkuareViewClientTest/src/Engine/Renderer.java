@@ -11,6 +11,7 @@ import kdu_jni.Kdu_simple_file_source;
 
 public class Renderer {
 
+	@SuppressWarnings("unused")
 	private Kdu_simple_file_source raw_src;
 	private Jp2_family_src family_src;
 	private Jpx_source wrapped_src;

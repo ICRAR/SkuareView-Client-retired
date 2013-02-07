@@ -1,7 +1,6 @@
 package com;
 
 import kdu_jni.KduException;
-import kdu_jni.Kdu_cache;
 import kdu_jni.Kdu_client;
 import kdu_jni.Kdu_codestream;
 import kdu_jni.Kdu_global;
@@ -15,7 +14,6 @@ public class Client_Connect {
 	private String _trans;
 	private String _cache_dir;
 	private int _mode;
-	private String _comp_url;
 	private boolean connected;
 	private int queue;
 	
@@ -31,7 +29,6 @@ public class Client_Connect {
 		_trans = "http-tcp";
 		_cache_dir = null;
 		_mode = Kdu_global.KDU_CLIENT_MODE_AUTO;
-		_comp_url = null;
 		client = new Kdu_client();
 		
 		try {
@@ -84,11 +81,11 @@ public class Client_Connect {
 	{	
 		try{
 		boolean complete[] = {false};
-		int databin_length = client.Get_databin_length(JpipConstants.META_DATA_BIN_CLASS,client.Get_next_codestream(queue), 0,complete);
+		client.Get_databin_length(JpipConstants.META_DATA_BIN_CLASS,client.Get_next_codestream(queue), 0,complete);
 	
 		if(complete[0])
 		{
-			int main_header = client.Get_databin_length(JpipConstants.MAIN_HEADER_DATA_BIN_CLASS, client.Get_next_codestream(queue), 0,complete);
+			client.Get_databin_length(JpipConstants.MAIN_HEADER_DATA_BIN_CLASS, client.Get_next_codestream(queue), 0,complete);
 			if(complete[0])
 			{
 				Kdu_codestream codestream = new Kdu_codestream();
