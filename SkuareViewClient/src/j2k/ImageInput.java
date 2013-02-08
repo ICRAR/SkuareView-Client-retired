@@ -35,6 +35,11 @@ public class ImageInput {
 	private ImageView actualView;
 	private Render render;
 
+	/**
+	 * The ImageInput class defines the input source for an image,
+	 * it handles the management of the communication, cache and rendering
+	 * of the image.
+	 */
 	public ImageInput()
 	{
 		input = null;
@@ -57,23 +62,47 @@ public class ImageInput {
 		render = new Render(this);
 
 	}
+	/**
+	 * Lock the code stream
+	 */
 	public void lockCodeStream()
 	{
 		codestreamMutex.lock();
 	}
+	/**
+	 * Unlock the code stream
+	 */
 	public void unlockCodeStream()
 	{
 		codestreamMutex.unlock();
 	}
+	/**
+	 * Check if there is an input
+	 * 
+	 * @return boolean
+	 */
 	public boolean isOpened()
 	{
 		return (input != null);
 	}
+	/**
+	 * Get instance of the JPIP reader
+	 * 
+	 * @return JPIP Reader
+	 */
 	public Reader getReader()
 	{
 		return reader;
 	}
-
+/**
+ * Open a new image
+ * The path name is passed to the JPIP Reader then the Reader is used to create
+ * the codestream. The codestream is then configured and the base values for the dimensions
+ * are set. Further information about the codestream is printed to the programs console.
+ * 
+ * @param fname Path to image, usually in the format JPIP://server.com/imagename.jpx
+ * @throws Exception
+ */
 	public void open(String fname) throws Exception
 	{
 		if(input != null) close();
@@ -137,10 +166,19 @@ public class ImageInput {
 
 		if(reader != null) reader.init();
 	}
+	/**
+	 * Return the ImageView instance associated with this object
+	 * @return
+	 */
 	public ImageView getActualView()
 	  {
 	    return actualView;
 	  }
+	/**
+	 * Determine the size of the expansions for the image
+	 * 
+	 * @throws KduException
+	 */
 	private void determineReferenceExpansion() throws KduException
 	{
 		maxComponents = 0;
@@ -179,6 +217,9 @@ public class ImageInput {
 
 		expansion.Assign(minExpansion);
 	}
+	/**
+	 * Stop the renderer from decoding the image
+	 */
 	public synchronized void stopDecoding()
 	  {
 	    if(reader != null) reader.stop();
@@ -186,6 +227,11 @@ public class ImageInput {
 
 	    actualView = null;
 	  }
+	/**
+	 * Start decoding the image
+	 * 
+	 * @param newView ImageView that defines the current ROI that is being rendered
+	 */
 	public synchronized void startDecoding(ImageView newView)
 	  {
 	    if(newView.isCompleted()) return;
@@ -225,7 +271,10 @@ public class ImageInput {
 	    render.start();
 	    if(reader != null) reader.start();
 	  }
-
+/**
+ * Close input and clean up
+ * @throws Exception
+ */
 	public void close() throws Exception
 	{
 		stopDecoding();
@@ -244,33 +293,55 @@ public class ImageInput {
 			throw new Exception("Internal Kakadu exception (" + ex.getMessage() + ")");	
 		}
 	}
+	/**
+	 * Return the name of the image
+	 * @return String imageName
+	 */
 	public String getImageName()
 	{
 		return imageName;
 	}
+	/**
+	 * Checks to see if the image is remotely accessed
+	 * @return Check if reader is null
+	 */
 	public boolean isRemote()
 	{
 		return(reader != null);
 	}
+	/**
+	 * Get the Real width of the image
+	 * @return width of image
+	 */
 	public int getRealWidth() 
 	{ 
 		return imageRealWidth; 
 	}
-
+	/**
+	 * Get the Real Height of the image
+	 * @return Height of image
+	 */
 	public int getRealHeight() 
 	{ 
 		return imageRealHeight; 
 	}
-
+/**
+ *  Get the width of the displayed image
+ * @return width of image
+ */
 	public int getWidth() 
 	{ 
 		return imageWidth; 
 	}
-
+/**
+ *  Get the Height of the displayed image
+ * @return height of image
+ */
 	public int getHeight() 
 	{ 
 		return imageHeight; 
 	}
+	
 	public Kdu_codestream getCodestream() { return codestream; }
 	public Kdu_channel_mapping getChannels() { return channels; }
 	public int getDiscardLevels() { return discardLevels; }
@@ -279,12 +350,22 @@ public class ImageInput {
 	public Kdu_coords getExpansion() { return expansion; }
 	public int getNumLayers() { return numLayers; }
 
-
+/**
+ * Create a view based on this image
+ * @return	ImageView object
+ */
 	public ImageView createView()
 	{
 		if(input == null) return null;
 		return new ImageView(this, null, 0);
 	}
+	/**
+	 * Create a view based on given width and height limits
+	 * 
+	 * @param limitWidth
+	 * @param limitHeight
+	 * @return ImageView
+	 */
 	public ImageView createView(int limitWidth, int limitHeight)
 	{
 		if(input == null) return null;
