@@ -42,6 +42,7 @@ public class ImageInput {
 	 */
 	public ImageInput()
 	{
+		//Initialize Variables
 		input = null;
 
 		codestreamMutex = new Mutex();
@@ -105,11 +106,14 @@ public class ImageInput {
  */
 	public void open(String fname) throws Exception
 	{
+		//check for empty input
 		if(input != null) close();
 
 		imageName = fname;
+		//Force input string to capitals
 		String upper = fname.toUpperCase();
 
+		//Check input type
 		try {
 			if(upper.startsWith("JPIP://")) {
 				reader = new Reader(this);
@@ -125,37 +129,43 @@ public class ImageInput {
 				fileIn.Open(fname, true);
 				input = fileIn;
 			}
-
+			//Create codestream from input
 			codestream.Create(input);
+			
 			if(jp2In.Exists()) channels.Configure(jp2In, false);
 			else channels.Configure(codestream);
 
+			//Determine details of codestream
 			discardLevels = 0;
-			//maxDiscardLevels = codestream.Get_min_dwt_levels();
+			//Get levels of Quality
+			maxDiscardLevels = codestream.Get_min_dwt_levels();
+			
 			referenceComponent = channels.Get_source_component(0);
 			determineReferenceExpansion();
+			//Get dimensions of image
 			codestream.Get_dims(referenceComponent, varDim);
 			imageWidth = imageRealWidth = varDim.Access_size().Get_x();
 			imageHeight = imageRealHeight = varDim.Access_size().Get_y();
 			
-			
+			//Set codestream as persistant
 			codestream.Set_persistent();
 			
+			//Recheck levels of quality
 			maxDiscardLevels = codestream.Get_min_dwt_levels();
 			
+			//Find tile 
 			Kdu_coords coord = new Kdu_coords();
 			codestream.Find_tile(referenceComponent, minExpansion, coord);
 			
+			//Open tile
 			codestream.Create_tile(coord);
 			
+			//Get max layers, number of components and quality levels
 			numLayers = maxNumLayers = codestream.Get_max_tile_layers();
 			SkuareViewClient.console.println("Number of Layers: " + numLayers);
 			int num_comps = codestream.Get_num_components();
 			SkuareViewClient.console.println("Number of Components: " + num_comps);
-			SkuareViewClient.console.println("" + maxDiscardLevels);
-			
-			//codestream.Augment_cache_threshold((4*1024*1024));
-			
+			SkuareViewClient.console.println("Levels of Quality: " + maxDiscardLevels);
 
 		} catch(KduException ex) {
 			reader = null;
@@ -234,12 +244,15 @@ public class ImageInput {
 	 */
 	public synchronized void startDecoding(ImageView newView)
 	  {
+		//Check to see if decoding is required
 	    if(newView.isCompleted()) return;
 	    if(actualView == newView) return;
 
 	    actualView = newView;
+	    //Get resolution of view
 	    discardLevels = newView.getResolution();
 
+	    //Set up codestream
 	    try {
 	      codestream.Apply_input_restrictions(0, maxComponents, discardLevels, 0, null,
 					Kdu_global.KDU_WANT_CODESTREAM_COMPONENTS);
@@ -253,6 +266,7 @@ public class ImageInput {
 	      Kdu_dims region = new Kdu_dims();
 	      Kdu_dims realRegion = new Kdu_dims();
 
+	      //Determine region of interest
 	      region.Access_pos().Set_x(newView.getX());
 	      region.Access_pos().Set_y(newView.getY());
 	      region.Access_size().Set_x(newView.getWidth());
@@ -268,6 +282,7 @@ public class ImageInput {
 				ex.printStackTrace();
 			}
 
+	    //Start Render then reader
 	    render.start();
 	    if(reader != null) reader.start();
 	  }

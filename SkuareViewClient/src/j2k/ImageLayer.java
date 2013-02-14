@@ -6,6 +6,14 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+/**
+ * ImageLayer
+ * This class creates an Image Layer with a pixel recolouring, however this may be no longer used as
+ * there is problems in re-displaying the new image after recolouring that have not yet been resolved
+ * 
+ * @author dmccarthy
+ * @since 14/2/2013
+ */
 @SuppressWarnings("serial")
 public class ImageLayer extends JPanel{
 	private BufferedImage image;
@@ -13,6 +21,14 @@ public class ImageLayer extends JPanel{
 	private int pixelWidth;
 	private int pixelHeight;
 	
+	/**
+	 * Constructor
+	 * This constructs the Image Layer and recolours the pixels based off an automatic algorithm
+	 * The algorithm colours the pixels based off their intensity.
+	 * 
+	 * @param in	BufferedImage
+	 * @param base	ImagePanel
+	 */
 	public ImageLayer(BufferedImage in,ImagePanel base)
 	{
 		//Image to be modified
@@ -103,10 +119,17 @@ public class ImageLayer extends JPanel{
 		
 		//System.out.println("Highest Value: " + highest + " Lowest Value: " + lowest);
 	}
+	/**
+	 * Paint Panel
+	 */
 	public void paint(Graphics g)
 	{
 		g.drawImage(image, 0,0,null);
 	}
+	/**
+	 * Return ImagePanel
+	 * @return	ImagePanel
+	 */
 	public ImagePanel getImagePanel()
 	{
 		return oImage;
