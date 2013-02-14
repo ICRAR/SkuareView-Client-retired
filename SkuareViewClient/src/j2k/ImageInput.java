@@ -178,7 +178,7 @@ public class ImageInput {
 	}
 	/**
 	 * Return the ImageView instance associated with this object
-	 * @return
+	 * @return ImageView - ImageView oject
 	 */
 	public ImageView getActualView()
 	  {

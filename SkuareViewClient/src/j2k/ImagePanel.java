@@ -71,7 +71,7 @@ InternalFrameListener
 	 * the ImagePanel is created as well as a smaller panel which creates the 
 	 * miniView.
 	 * 
-	 * @param ImageWindow imageWindow
+	 * @param imageWindow
 	 */
 	public ImagePanel(ImageWindow imageWindow)
 	{
@@ -656,7 +656,7 @@ InternalFrameListener
 	/**
 	 * 
 	 * This method returns the raw imaged assosiated with this ImagePanel
-	 * @return
+	 * @return ImageInput - Returns the base image
 	 */
 	public ImageInput getRaw()
 	{
