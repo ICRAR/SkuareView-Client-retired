@@ -18,8 +18,8 @@ import kdu_jni.Kdu_region_compositor;
 /**
  * Compositor for JPX image data
  * 
- * @author dmccarthy
- *
+ * @author Dylan McCarthy
+ * @since 14/02/2013
  */
 public class Compositor implements Runnable {
 
@@ -42,8 +42,8 @@ public class Compositor implements Runnable {
 	 * Takes the input from the JPX source and processes it 
 	 * then outputs it to the ImagePanel that is being used to display the image
 	 *
-	 * @param input_src
-	 * @param display
+	 * @param input_src - This is a Jpx_source input, usually obtained through wrapping the JPIP Reader in a Jp2_famly_source object then to a Jpx_source
+	 * @param display	- The ImagePanel that the image is to be displayed on
 	 * @throws KduException
 	 * 
 	 * 
@@ -58,6 +58,9 @@ public class Compositor implements Runnable {
 		compositor.Create(jpx_src);
 
 	}
+	/**
+	 * Run the Compositor
+	 */
 	@Override
 	public void run() {
 
@@ -119,6 +122,11 @@ public class Compositor implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Start the compositor and set up initial properties
+	 * 
+	 * @param reader - the Reader which is connected to the JPIP source
+	 */
 	public void start(Reader reader)
 	{
 		inputReader = reader;
@@ -228,6 +236,9 @@ public class Compositor implements Runnable {
 		myThread = new Thread(this);
 		myThread.run();
 	}
+	/**
+	 * Stop the compositor and clean up threads
+	 */
 	public void stop()
 	{
 		try {
@@ -241,6 +252,10 @@ public class Compositor implements Runnable {
 		}
 
 	}
+	/**
+	 * Update the display by returning the latest ImagePanel object
+	 * @return ImagePanel object which holds the current image
+	 */
 	public ImagePanel updateDisplay()
 	{
 		return display;

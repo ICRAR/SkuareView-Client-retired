@@ -41,7 +41,7 @@ import org.noos.xing.mydoggy.plaf.MyDoggyToolWindowManager;
  This class creates and runs the GUI elements of the program as well
  as the main function where the libraries are specified.
  
-@author dmccarthy
+@author Dylan McCarthy
 @since 7/2/2013
 
 */
@@ -56,8 +56,6 @@ public class SkuareViewClient  {
 	private String imageName;
 	public ArrayList<String> prev;
 	public static Console console;
-
-	//create GUI
 	/**
 	 * Creates the GUI and starts the 
 	 * Threads to run it.
@@ -71,7 +69,6 @@ public class SkuareViewClient  {
 			}
 		});
 	}
-	//Initialize
 	/**
 	 * Initializes the Main window, toolbox and console window
 	 * 
@@ -82,7 +79,6 @@ public class SkuareViewClient  {
 		initToolWindowManager();
 		prev = new ArrayList<String>();
 	}
-	//Start GUI
 	/**
 	 * Starts the GUI and creates the toolbox object
 	 */
@@ -176,7 +172,7 @@ public class SkuareViewClient  {
 		this.frame.getContentPane().add(twManager,"1,1,");
 	}
 	/**
-	 * Sets up the window behavour of the Menu toolbox
+	 * Sets up the window behavior of the Menu toolbox
 	 */
 	protected void setupDebugTool()
 	{
@@ -275,7 +271,7 @@ public class SkuareViewClient  {
 	 * and adds it to the current GUI and sets it as the
 	 * selected window
 	 * 
-	 * @param newWindow
+	 * @param newWindow - This is the JPanel which is to be attached to the new window
 	 */
 	protected void createNewWindow(JPanel newWindow)
 	{

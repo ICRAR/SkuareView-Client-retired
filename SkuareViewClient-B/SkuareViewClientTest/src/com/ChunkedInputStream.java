@@ -13,7 +13,7 @@ import java.net.ProtocolException;
  * responses with a simple format. Do not support internal chunk headers.
  *
  * @author Juan Pablo Garcia Ortiz
- * @eee java.io.InputStream
+ * @see java.io.InputStream
  * @see StringInputStream
  * @version 0.1
  *

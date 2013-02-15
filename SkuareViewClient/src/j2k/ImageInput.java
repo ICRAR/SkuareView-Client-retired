@@ -3,6 +3,12 @@ package j2k;
 import UI.SkuareViewClient;
 import kdu_jni.*;
 
+/**
+ * This class handles the image input and control of the reader and decompressor
+ * 
+ * @author Dylan McCarthy
+ * @since 14/02/2013
+ */
 public class ImageInput {
 
 	private int discardLevels;

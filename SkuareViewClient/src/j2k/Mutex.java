@@ -2,16 +2,16 @@ package j2k;
 
 /**
  * Mutex for locking and unlocking the codestream thread
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 14/02/2013
  *
  */
 public class Mutex {
 
 	private Thread owner = null;
-/**
- * Lock the current thread
- */
+	/**
+	 * Lock the current thread
+	 */
 	public synchronized void lock()
 	{
 		//Get current thread

@@ -14,7 +14,7 @@ import java.util.LinkedList;
  * This class creates the ImageView for an image,
  * this includes creating the region of interest.
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 14/02/2013
  */
 public class ImageView {

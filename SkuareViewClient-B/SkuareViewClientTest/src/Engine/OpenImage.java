@@ -1,10 +1,22 @@
 package Engine;
 
-
+/**
+ * This class manages the functions that are required to open an image
+ * and return a ImagePanel object
+ * @author Dylan McCarthy
+ * @since 14/02/2013
+ *
+ */
 public class OpenImage {
 
 	private static ImagePanel imagePanel;
 	
+	/**
+	 * Takes an input path and opens the image
+	 * 
+	 * @param fname - Input String
+	 * @return Returns an ImagePanel object
+	 */
 	@SuppressWarnings("unused")
 	public static ImagePanel open(String fname)
 	{

@@ -10,7 +10,7 @@ import javax.swing.JScrollBar;
  * This class ties together all the required classes and functions required to open an image
  * and return the created ImagePanel ready to be used in the GUI
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 14/02/2013
  */
 @SuppressWarnings("serial")

@@ -1,13 +1,23 @@
 package com;
 import java.io.IOException;
 
-
+/**
+ * Basic HTTP GET class for getting data through HTTP
+ * 
+ * @author Dylan McCarthy
+ * @since 14/02/2013
+ *
+ */
 public class HTTP_GET extends Cache {
 
 	@SuppressWarnings("unused")
 	private int readData;
 	private HTTPSocket socket;
 	
+	/**
+	 * Takes a path input as a string and connects to the JPIP server
+	 * @param nameIn
+	 */
 	@SuppressWarnings("unused")
 	public HTTP_GET(String nameIn)
 	{
@@ -54,6 +64,13 @@ public class HTTP_GET extends Cache {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Reads from Chunked Input and returns boolean
+	 * 
+	 * @return returns true of false depending on how the input ended
+	 * @throws IOException
+	 * @throws Exception
+	 */
 	private boolean readFromChunkedInput() throws IOException, Exception
 	{
 		boolean res = false;

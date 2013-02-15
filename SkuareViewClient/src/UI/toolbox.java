@@ -14,7 +14,7 @@ import java.awt.Component;
  * This holds the implementations of the Zoom, Pixel Recolour and
  * Select Area functions
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 7/2/2013
  */
 @SuppressWarnings("serial")

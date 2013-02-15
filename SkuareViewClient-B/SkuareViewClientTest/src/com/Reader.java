@@ -5,7 +5,13 @@ import java.net.SocketException;
 
 import Engine.ImageView;
 
-
+/**
+ * The Reader is responsible for managing the JPIP communications over HTTP.
+ * It is currently implemented to manage a stateless HTTP connection.
+ * 
+ * @author Dylan McCarthy
+ * @since 14/02/2013
+ */
 public class Reader extends Cache implements Runnable {
 
 	@SuppressWarnings("unused")
@@ -21,6 +27,13 @@ public class Reader extends Cache implements Runnable {
 	@SuppressWarnings("unused")
 	private static final int MAX_LEN = 2000;
 	
+	/**
+	 * A new Reader is created by supplying an ImageView object that has a JPIP path
+	 * 
+	 * @param path - path to the JPIP server
+	 * @param actualView - Valid ImageView with a JPIP compatible path
+	 * @throws Exception
+	 */
 	public Reader(String path,ImageView actualView) throws Exception
 	{
 		int i;
@@ -106,6 +119,13 @@ public class Reader extends Cache implements Runnable {
 			throw new Exception("Cannot Connect");
 		}
 	}
+	/**
+	 * This function reads from a Chunked input, this is the transfer method of the currently implemented JPIP connection
+	 * 
+	 * @return boolean - Returns true when read if finished, or false if there is a problem
+	 * @throws IOException
+	 * @throws Exception
+	 */
 	private boolean readFromChunkedInput() throws IOException, Exception
 	{
 		boolean res = false;
@@ -127,6 +147,15 @@ public class Reader extends Cache implements Runnable {
 		}
 		return res;
 	}
+	/**
+	 * Get data from a specified ROI
+	 * 
+	 * @param x	- x location
+	 * @param y - y location 
+	 * @param width - width of ROI
+	 * @param height - height of ROI
+	 * @param scale - scale of ROI
+	 */
 	public void getData(int x, int y, int width, int height, int scale)
 	{
 		try{
@@ -180,12 +209,18 @@ public class Reader extends Cache implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Start the reader, this sets up the thread for the reader to run in and checks to make sure that there is an input
+	 */
 	public void start()
 	{
 		if(host == null) return;
 		myThread = new Thread(this);
 		myThread.start();
 	}
+	/**
+	 * Stop the reader and clean up thread
+	 */
 	public void stop()
 	{
 		if(myThread !=null)
@@ -201,6 +236,9 @@ public class Reader extends Cache implements Runnable {
 			finish = false;
 		}
 	}
+	/**
+	 * Reads in Data from active connection based on ROI of image.
+	 */
 	@Override
 	public void run() {
 		try{
@@ -260,6 +298,10 @@ public class Reader extends Cache implements Runnable {
 		}
 		
 	}
+	/**
+	 * Returns the state of the reader
+	 * @return	boolean - state of reader
+	 */
 	public boolean finished()
 	{
 		return finish;

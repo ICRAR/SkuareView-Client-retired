@@ -6,6 +6,13 @@ import kdu_jni.Kdu_codestream;
 import kdu_jni.Kdu_global;
 import kdu_jni.Kdu_window;
 
+/**
+ * This class attempts to connect to a JPIP server using the KDU_Client interface
+ * Does not currently Work
+ * 
+ * @author Dylan McCarthy
+ * @since 14/02/2013
+ */
 public class Client_Connect {
 
 	private String _server;
@@ -19,10 +26,13 @@ public class Client_Connect {
 	
 	private Kdu_client client;
 	
+	/**
+	 * Takes the path as input and connects to the JPIP server 
+	 * 
+	 * @param path - Path to JPIP server
+	 */
 	public Client_Connect(String path)
 	{
-		
-		
 		_server = path.substring(0,path.lastIndexOf('/'));
 		_proxy = null;
 		_req = path.substring(path.lastIndexOf('/')+1,path.length());
@@ -47,17 +57,29 @@ public class Client_Connect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
+	/**
+	 * Check the connection is valid
+	 * 
+	 * @return returns value of Check_compatiable_connection call
+	 * @throws KduException
+	 */
 	private boolean check_conn() throws KduException
 	{
 		return client.Check_compatible_connection(_server, _req, _mode);
 	}
+	/**
+	 * Check if there is a connection
+	 * 
+	 * @return state of connection
+	 */
 	public boolean isConnected()
 	{
 		return connected;
 	}
+	/**
+	 * close connection and clean up
+	 */
 	public void close()
 	{
 		if(connected)
@@ -70,6 +92,12 @@ public class Client_Connect {
 			}
 		}
 	}
+	/**
+	 * Post a valid window as a reference for the JPIP connection
+	 * 
+	 * @param window - window for the current ROI
+	 * @throws KduException
+	 */
 	public void post_window(Kdu_window window) throws KduException
 	{
 		if(connected)
@@ -77,6 +105,9 @@ public class Client_Connect {
 			client.Post_window(window);
 		}
 	}
+	/**
+	 * Get Data from connection
+	 */
 	public void getData()
 	{	
 		try{

@@ -4,16 +4,10 @@ import kdu_jni.Kdu_global;
 import kdu_jni.Kdu_message;
 
 
-/* ========================================================================= */
-/*                            Kdu_sysout_message                             */
-/* ========================================================================= */
-/// <summary>
-/// Overrides Kdu_message to implement error and warning message
-/// services.  Objects of this class can be passed to Kakadu's error
-/// and warning message customization functions, to ensure that errors
-/// in the Kakadu native code will be handled correctly in the managed
-/// environment.
-/// </summary>
+/**
+ * Kdu Exception Handling
+ *
+ */
 public class Kdu_sysout_message extends Kdu_message
 {
 	public Kdu_sysout_message(boolean raise_exception)

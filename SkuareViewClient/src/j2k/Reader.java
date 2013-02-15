@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.net.SocketException;
 
 /**
- * The Reader is responcible for managing the JPIP communications over HTTP.
+ * The Reader is responsible for managing the JPIP communications over HTTP.
  * It is currently implemented to manage a stateless HTTP connection.
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 14/02/2013
  */
 public class Reader extends Cache implements Runnable {
@@ -27,7 +27,7 @@ public class Reader extends Cache implements Runnable {
 	/**
 	 * A new Reader is created by supplying an ImageInput object that has a JPIP path
 	 * 
-	 * @param imageInput - Valid ImageInput with a JPIP compatable path
+	 * @param imageInput - Valid ImageInput with a JPIP compatible path
 	 * @throws Exception
 	 */
 	public Reader(ImageInput imageInput) throws Exception

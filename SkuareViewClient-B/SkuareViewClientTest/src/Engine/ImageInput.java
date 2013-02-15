@@ -14,6 +14,12 @@ import kdu_jni.Kdu_compressed_source;
 import kdu_jni.Kdu_coords;
 import kdu_jni.Kdu_simple_file_source;
 
+/**
+ * This class handles the image input and control of the reader and compositor
+ * 
+ * @author Dylan McCarthy
+ * @since 14/02/2013
+ */
 public class ImageInput {
 
 	private Kdu_compressed_source input;
@@ -37,6 +43,9 @@ public class ImageInput {
 	
 	private ImagePanel display;
 	
+	/**
+	 * Creates a new ImageInput instance and initializes variables 
+	 */
 	public ImageInput()
 	{
 		input = null;
@@ -50,25 +59,44 @@ public class ImageInput {
 		reader = null;
 		actualView = null;
 		
-		
-		
 	}
+	/**
+	 * Lock the Codestream
+	 */
 	public void lockCodeStream()
 	{
 		codestreamMutex.lock();
 	}
+	/**
+	 * Unlock the CodeStream
+	 */
 	public void unlockCodeStream()
 	{
 		codestreamMutex.unlock();
 	}
+	/**
+	 * Check if input is opened
+	 * @return return state of input
+	 */
 	public boolean isOpened()
 	{
 		return (input != null);
 	}
+	/**
+	 * Get the reader associated with this input
+	 * 
+	 * @return Reader object connected to JPIP
+	 */
 	public Reader getReader()
 	{
 		return reader;
 	}
+	/**
+	 * Open a image from a specified path
+	 * 
+	 * @param fname - Path to the image
+	 * @throws Exception
+	 */
 	public void open(String fname) throws Exception
 	{
 		if(input != null)return;
@@ -96,10 +124,19 @@ public class ImageInput {
 		startDecoding(this.actualView);
 		
 	}
+	/**
+	 * Create the display area for the image to be displayed on 
+	 * 
+	 * @param view_size - Kdu_coords object is used to define the size
+	 * @throws KduException
+	 */
 	private void start_display(Kdu_coords view_size) throws KduException
 	{
 		display = new ImagePanel(view_size);
 	}
+	/**
+	 * Stop decoding and remove current view
+	 */
 	public synchronized void stopDecoding()
 	{
 		if(reader != null) reader.stop();
@@ -107,6 +144,11 @@ public class ImageInput {
 		
 		actualView = null;
 	}
+	/**
+	 * Start decoding of a view
+	 * 
+	 * @param newView - The ImageView to be decoded
+	 */
 	public synchronized void startDecoding(ImageView newView)
 	{
 		actualView = newView;
@@ -117,6 +159,10 @@ public class ImageInput {
 		}
 		
 	}
+	/**
+	 * Get the ImagePanel that holds the current image
+	 * @return - ImagePanel that is holding the image
+	 */
 	public ImagePanel getDisplay()
 	{
 		return display;

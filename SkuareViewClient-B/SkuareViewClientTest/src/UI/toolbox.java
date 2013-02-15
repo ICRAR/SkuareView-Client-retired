@@ -8,15 +8,24 @@ import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import java.awt.Component;
 
-
-
+/**
+ * Toolbox Menu
+ * This holds the implementations of the Zoom, Pixel Recolour and
+ * Select Area functions
+ * 
+ * @author Dylan McCarthy
+ * @since 7/2/2013
+ */
 @SuppressWarnings("serial")
 public class toolbox extends JPanel {
 
 	private SkuareViewClient _client;
 	public JPanel miniViewPanel;
 	/**
-	 * Create the panel.
+	 * Creates the menu and is passed the client object so that it
+	 * can pass back states of the toggle buttons
+	 * 
+	 * @param client	SkuareViewClient client
 	 */
 	public toolbox(SkuareViewClient client) {
 		_client = client;
@@ -82,6 +91,12 @@ public class toolbox extends JPanel {
 		miniViewPanel.setLayout(new CardLayout(0, 0));
 
 	}
+	/**
+	 * Creates the MiniView image for the menu panel
+	 * 
+	 * @param view		JPanel view 	This is the JPanel holding the MiniView image
+	 * @param id		String id		This is the id of the content which is checked to make sure the correct miniview is displayed
+	 */
 	public void setMiniView(JPanel view,String id)
 	{
 		boolean found = false;

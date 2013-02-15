@@ -15,8 +15,8 @@ import java.util.ArrayList;
 /**
  * This class creates and displays a custom dialog window for 
  * connecting to a JPIP server
- * @author dmccarthy
- *
+ * @author Dylan McCarthy
+ * @since 14/02/2013
  */
 @SuppressWarnings("serial")
 public class GetUrl extends JDialog {

@@ -5,10 +5,10 @@ import kdu_jni.Kdu_global;
 import kdu_jni.Kdu_thread_env;
 
 /**
- * Multithread Enviroment
- * This class sets up the multithreaded enviroment required by Kakadu
+ * Multi-thread Environment
+ * This class sets up the multi-threaded environment required by Kakadu
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 08/02/2013
  */
 public class Enviroment {
@@ -18,7 +18,7 @@ public class Enviroment {
 	
 	/**
 	 * Constructor
-	 * Creates the Enviroment based off the amount of available processors
+	 * Creates the Environment based off the amount of available processors
 	 */
 	public Enviroment()
 	{
@@ -37,7 +37,7 @@ public class Enviroment {
 	}
 	/**
 	 * Constructor
-	 * Creates the Enviroment based off a given number of threads
+	 * Creates the Environment based off a given number of threads
 	 * @param threads	Given number of threads to be generated
 	 */
 	public Enviroment(int threads)
@@ -58,7 +58,7 @@ public class Enviroment {
 		}
 	}
 	/**
-	 * Return the created enviroment
+	 * Return the created environment
 	 * @return Kdu_thread_env object
 	 */
 	public Kdu_thread_env getEnv()
@@ -75,7 +75,7 @@ public class Enviroment {
 		return num_threads;
 	}
 	/**
-	 * Clean up and dispose of Enviroment
+	 * Clean up and dispose of Environment
 	 * 
 	 * @throws KduException
 	 */

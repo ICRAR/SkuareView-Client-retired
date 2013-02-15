@@ -13,7 +13,7 @@ import org.noos.xing.mydoggy.Content;
 /**
  * Swing Worker class for handling Toggle Button functions and the MiniView
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 7/2/2013
  */
 public class Worker extends SwingWorker<String,ImagePanel> {

@@ -7,6 +7,12 @@ import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * The ImageView holds the information about the current Region of Interest that is being viewed in the client.
+ * 
+ * @author Dylan McCarthy
+ * @since 14/02/2013
+ */
 public class ImageView {
 
 	@SuppressWarnings("unused")
@@ -25,6 +31,13 @@ public class ImageView {
 	private ImagePanel imagePanel;
 	private int scale;
 
+	/**
+	 * Creates a new ImageView
+	 * @param img The ImagePanel for this view
+	 * @param roi Region of Interest
+	 * @param resolution Resolution of the view
+	 * @param scale Scale of the view
+	 */
 	public ImageView(ImagePanel img, Rectangle roi, int resolution,int scale)
 	{
 		image = null;
@@ -56,6 +69,9 @@ public class ImageView {
 		regionsList.add(imageROI);
 
 	}
+	/**
+	 * Change the ROI
+	 */
 	private void changeROI()
 	{
 		if(newImageROI.equals(imageROI) && (image != null)) return;
@@ -104,11 +120,21 @@ public class ImageView {
 		imageROI.setBounds(newImageROI);
 
 	}
+	/**
+	 * Set Location 
+	 * @param x Location x value
+	 * @param y Location y value
+	 */
 	public void setLocation(int x, int y)
 	{
 		newImageROI.setLocation(x,y);
 		changeROI();
 	}
+	/**
+	 * Set the Size of the view
+	 * @param width View width
+	 * @param height View Height
+	 */
 	public void setSize(int width, int height)
 	{
 		newImageROI.setSize(width, height);

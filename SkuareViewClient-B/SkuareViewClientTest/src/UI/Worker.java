@@ -7,6 +7,12 @@ import org.noos.xing.mydoggy.Content;
 
 import Engine.ImagePanel;
 
+/**
+ * Swing Worker class for handling Toggle Button functions and the MiniView
+ * 
+ * @author Dylan McCarthy
+ * @since 7/2/2013
+ */
 public class Worker extends SwingWorker<String,ImagePanel> {
 
 	@SuppressWarnings("unused")
@@ -19,12 +25,27 @@ public class Worker extends SwingWorker<String,ImagePanel> {
 	@SuppressWarnings("unused")
 	private String id;
 
+	/**
+	 * Creates a new Worker for the Zoom function
+	 * 
+	 * @param panel		ImagePanel panel 	ImagePanel from selected content
+	 * @param action	String action		Identifier for the action being done
+	 * @param activated	Boolean activated	State of the toggle button
+	 */
 	public Worker(ImagePanel panel,String action,boolean activated)
 	{
 		this.panel = panel;
 		this.action = action;
 		this.activated = activated;
 	}
+	/**
+	 * Creates a new Worker for the MiniView Function
+	 * 
+	 * @param panel		ImagePanel panel	ImagePanel from selected content
+	 * @param action	String action		Identifier for the action being done
+	 * @param tb		toolbox tb			Toolbox Object
+	 * @param id		String id			Identifier of the image opened
+	 */
 	public Worker(ImagePanel panel, String action, toolbox tb,String id) {
 
 		this.panel = panel;
@@ -32,12 +53,23 @@ public class Worker extends SwingWorker<String,ImagePanel> {
 		this.tb = tb;
 		this.id = id;
 	}
+	/**
+	 * Creates a new Worker for the Pixel Recolouring function
+	 * 
+	 * @param content		Content content 	The currently selected Content
+	 * @param action		Sting action 		Identifier for the action being done
+	 * @param activated		boolean activated	State of the toggle button
+	 */
 	public Worker(Content content,String action,boolean activated)
 	{
 		this.content = content;
 		this.action = action;
 		this.activated = activated;
 	}
+	/**
+	 * Execute function in background
+	 * Depending on constructor used this executes the required function.
+	 */
 	@SuppressWarnings("unused")
 	@Override
 	protected String doInBackground() throws Exception {

@@ -8,7 +8,7 @@ import javax.imageio.*;
 
 /**
  * Outputs an Image to a standard image format
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 14/02/2013
  */
 public class ImageOutput {

@@ -8,7 +8,13 @@ import kdu_jni.KduException;
 import kdu_jni.Kdu_coords;
 import kdu_jni.Kdu_simple_file_source;
 
-
+/**
+ * This class manages the Compressor
+ * 
+ * @author Dylan McCarthy
+ * @since 14/02/2013
+ *
+ */
 public class Renderer {
 
 	@SuppressWarnings("unused")
@@ -19,6 +25,12 @@ public class Renderer {
 	public ImagePanel display;
 	private Compositor comp;
 
+	/**
+	 * Open file from path
+	 * 
+	 * @param path path to JPIP server
+	 * @throws KduException
+	 */
 	public void OpenFile(String path) throws KduException
 	{
 		if(path.contains("jpip://"))
@@ -47,16 +59,30 @@ public class Renderer {
 			}
 		}
 	}
+	/**
+	 * Create the display based off of a Kdu_coords object
+	 * @param view_size Kdu_coords ojbect
+	 * @throws KduException
+	 */
 	private void start_display(Kdu_coords view_size) throws KduException
 	{
 		display = new ImagePanel(view_size);
 		display.setVisible(true);
 	}
+	/**
+	 * Update the display and repaint
+	 * @throws KduException
+	 */
 	private void update_display() throws KduException
 	{
 		display = comp.updateDisplay();
 		display.repaint();
 	}
+	/**
+	 * Create new instance of the renderer and open the path
+	 * 
+	 * @param path Path to JPIP server
+	 */
 	public Renderer(String path)
 	{
 		try{
@@ -67,6 +93,10 @@ public class Renderer {
 			System.out.println(e.Get_kdu_exception_code());
 		}
 	}
+	/**
+	 * Get the ImagePanel created from this renderer
+	 * @return ImagePanel with current image data
+	 */
 	public ImagePanel getImagePanel()
 	{
 		return display;

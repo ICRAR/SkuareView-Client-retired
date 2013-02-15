@@ -31,7 +31,7 @@ import javax.swing.event.InternalFrameListener;
  * This class defines the JPanel on which an image is stored, as well as event functions
  * such as the click and drag movement and zooming.
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 14/02/2013
  */
 @SuppressWarnings("serial")

@@ -15,7 +15,7 @@ import kdu_jni.Kdu_thread_env;
  * The Render class is responsible for rendering all the JPIP data into a BufferedImage format.
  * The current implementation uses the KDU_region_decompressor to decompress the JPIP data.
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 14/02/2013
  */
 public class Render implements Runnable {

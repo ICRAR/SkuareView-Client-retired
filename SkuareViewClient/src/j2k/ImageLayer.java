@@ -11,7 +11,7 @@ import javax.swing.JPanel;
  * This class creates an Image Layer with a pixel recolouring, however this may be no longer used as
  * there is problems in re-displaying the new image after recolouring that have not yet been resolved
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 14/2/2013
  */
 @SuppressWarnings("serial")

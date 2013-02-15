@@ -11,10 +11,10 @@ import javax.swing.JTextPane;
 
 /**
  * Console Window
- * This object creates a text console for outputing information to the user
+ * This object creates a text console for outputting information to the user
  * 
- * @author dmccarthy
- *@since 7/2/2013
+ * @author Dylan McCarthy
+ * @since 7/2/2013
  */
 @SuppressWarnings("serial")
 public class Console extends JPanel  {

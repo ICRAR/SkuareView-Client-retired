@@ -6,7 +6,7 @@ import java.awt.Container;
 /**
  * Custom container for the Image window
  * 
- * @author dmccarthy
+ * @author Dylan McCarthy
  * @since 7/2/2013
  */
 @SuppressWarnings("serial")
