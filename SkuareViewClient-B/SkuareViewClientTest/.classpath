@@ -2,16 +2,16 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="/Users/dmccarthy/Downloads/mydoggy-1.5.0-beta1/lib/filters-2.0.235.jar"/>
-	<classpathentry kind="lib" path="/Users/dmccarthy/Downloads/mydoggy-1.5.0-beta1/lib/mydoggy-api-1.5.0.jar"/>
-	<classpathentry kind="lib" path="/Users/dmccarthy/Downloads/mydoggy-1.5.0-beta1/lib/mydoggy-examples-1.5.0.jar"/>
-	<classpathentry kind="lib" path="/Users/dmccarthy/Downloads/mydoggy-1.5.0-beta1/lib/mydoggy-plaf-1.5.0.jar"/>
-	<classpathentry kind="lib" path="/Users/dmccarthy/Downloads/mydoggy-1.5.0-beta1/lib/mydoggy-res-1.5.0.jar"/>
-	<classpathentry kind="lib" path="/Users/dmccarthy/Downloads/mydoggy-1.5.0-beta1/lib/swingx-0.9.1.jar"/>
-	<classpathentry kind="lib" path="/Users/dmccarthy/Downloads/mydoggy-1.5.0-beta1/lib/TableLayout-20050920.jar"/>
-	<classpathentry kind="lib" path="/Users/dmccarthy/Documents/KDU_Beta/java/kdu_jni.jar">
+	<classpathentry kind="lib" path="/Users/dmccarthy/Documents/working/mydoggy/mydoggy-1.5.0-beta1/lib/filters-2.0.235.jar"/>
+	<classpathentry kind="lib" path="/Users/dmccarthy/Documents/working/mydoggy/mydoggy-1.5.0-beta1/lib/mydoggy-api-1.5.0.jar"/>
+	<classpathentry kind="lib" path="/Users/dmccarthy/Documents/working/mydoggy/mydoggy-1.5.0-beta1/lib/mydoggy-examples-1.5.0.jar"/>
+	<classpathentry kind="lib" path="/Users/dmccarthy/Documents/working/mydoggy/mydoggy-1.5.0-beta1/lib/mydoggy-plaf-1.5.0.jar"/>
+	<classpathentry kind="lib" path="/Users/dmccarthy/Documents/working/mydoggy/mydoggy-1.5.0-beta1/lib/mydoggy-res-1.5.0.jar"/>
+	<classpathentry kind="lib" path="/Users/dmccarthy/Documents/working/mydoggy/mydoggy-1.5.0-beta1/lib/swingx-0.9.1.jar"/>
+	<classpathentry kind="lib" path="/Users/dmccarthy/Documents/working/mydoggy/mydoggy-1.5.0-beta1/lib/TableLayout-20050920.jar"/>
+	<classpathentry kind="lib" path="/Users/dmccarthy/Documents/working/KDU_7_2/java/kdu_jni.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/dmccarthy/Documents/KDU_Beta/bin"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/dmccarthy/Documents/KDU_7_2/bin"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
